@@ -7,6 +7,12 @@ exports.checkId = (req, res, next, id) => {
     }
     next()
 }
+exports.checkBody = (req, res, next) => {
+    if(!req.body.price || !req.body.name) {
+        return res.status(400).json({msg: 'no name and price'})
+    }
+    next()
+}
 
 exports.getAllTours = (req, res) => {
     res.status(200).json({
