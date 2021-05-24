@@ -1,6 +1,5 @@
 let mongoose = require('mongoose')
 let slugify = require('slugify')
-let validator = require('validator')
 
 let tourSchema = new mongoose.Schema({
     name: {
@@ -55,7 +54,7 @@ let tourSchema = new mongoose.Schema({
     summary: {
         type: String,
         trim: true,
-        required: [true, 'tour must have a description.']
+        required: [true, 'tour must have a summary.']
     },
     description: {
         type: String,

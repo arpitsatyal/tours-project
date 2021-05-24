@@ -1,4 +1,6 @@
 let Tour = require('../models/tourModel')
+let catchAsync = require('../utils/catchAsync')
+let AppError = require('../utils/appError')
 
 exports.aliasTopTours = async (req, res, next) => {
     req.query.limit = '5'
@@ -7,8 +9,7 @@ exports.aliasTopTours = async (req, res, next) => {
     next()
 }
 
-exports.getAllTours = async (req, res) => {
-    try {
+exports.getAllTours = catchAsync(async (req, res, next) => {
         // filtering
         // console.log(req.query)
         let queryObject = { ...req.query }
@@ -50,52 +51,53 @@ exports.getAllTours = async (req, res) => {
             results: tours.length,
             data: { tours }
         })
-    } catch (e) { res.status(404).json({ msg: e }) }
-}
+})
 
-exports.getOneTour = async (req, res) => {
+exports.getOneTour = catchAsync(async (req, res, next) => {
     let tour = await Tour.findById(req.params.id)
+    if(!tour) {
+        return next(new AppError('no tour found with that ID.', 404))
+    }
     res.status(200).json({
         status: 'success',
         data: { tour }
     })
-}
+})
 
-exports.createTour = async (req, res) => {
-    try {
-        let newTour = await Tour.create(req.body)
-        res.status(201).json({
-            status: 'success',
-            tour: newTour
-        })
-} catch(e) {
-    res.status(404).json({
-        status: 'fail',
-        message: e
+exports.createTour = catchAsync(async (req, res, next) => {
+    let newTour = await Tour.create(req.body)
+    res.status(201).json({
+        status: 'success',
+        tour: newTour
     })
-}
-}
+})
 
-exports.updateTour = async (req, res) => {
+exports.updateTour = catchAsync(async (req, res, next) => {
     let updatedTour = await Tour.findByIdAndUpdate(req.params.id, req.body, {
         new: true,
         runValidators: true
     })
+    if(!updatedTour) {
+        return next(new AppError('no tour found with that ID.', 404))
+    }
     res.status(200).json({
         status: 'success',
         tour: updatedTour
     })
-}
+})
 
-exports.deleteTour = async (req, res) => {
-    await Tour.findByIdAndDelete(req.params.id)
+exports.deleteTour = catchAsync(async (req, res, next) => {
+    let tour = await Tour.findByIdAndDelete(req.params.id)
+    if(!tour) {
+        return next(new AppError('no tour found with that ID.', 404))
+    }
     res.status(204).json({
         status: 'success',
         data: null
     })
-}
+})
 
-exports.getTourStats = async (req, res) => {
+exports.getTourStats = catchAsync(async (req, res, next) => {
     try {
         let stats = await Tour.aggregate([
             {
@@ -132,9 +134,9 @@ exports.getTourStats = async (req, res) => {
             message: e
         })
     }
-}
+})
 
-exports.getMonthlyPlan = async (req, res) => {
+exports.getMonthlyPlan = catchAsync(async (req, res, next) => {
     let year = req.params.year * 1
     let plan = await Tour.aggregate([
         {
@@ -171,4 +173,4 @@ exports.getMonthlyPlan = async (req, res) => {
         results: plan.length,
         data: { plan }
     })
-}
+})
