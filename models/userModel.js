@@ -1,6 +1,7 @@
 let mongoose = require('mongoose')
 let validator = require('validator')
 let bcrypt = require('bcryptjs')
+let crypto = require('crypto')
 
 let userSchema = new mongoose.Schema({
     name: {
@@ -20,6 +21,7 @@ let userSchema = new mongoose.Schema({
         enum: ['admin', 'user', 'guide', 'lead-guide'],
         default: 'user'
     },
+    photo: String,
     password: {
         type: String,
         required: [true, 'please insert a password'],
@@ -37,8 +39,8 @@ let userSchema = new mongoose.Schema({
         }
     },
     passwordChangedAt: Date,
-    photo: String
-
+    passwordResetToken: String,
+    passwordResetExpires: Date
 })
 
 userSchema.pre('save', async function (next) {
@@ -47,17 +49,33 @@ userSchema.pre('save', async function (next) {
     this.passwordConfirm = undefined
 })
 
+userSchema.pre('save', function(next) {
+    if(!this.isModified('password' || this.isNew)) return next()
+    this.passwordChangedAt = Date.now() - 1000
+    next()
+})
+
 //methods are accessible to the instances
-userSchema.methods.correctPassword = async function(reqbodyPassword, userPassword) {
+userSchema.methods.correctPassword = async function (reqbodyPassword, userPassword) {
     return await bcrypt.compare(reqbodyPassword, userPassword)
 }
 // this = current document
-userSchema.methods.changedPasswordAfter = function(JWTTimestamp) {
-    if(this.passwordChangedAt) {
+userSchema.methods.changedPasswordAfter = function (JWTTimestamp) {
+    if (this.passwordChangedAt) {
         let changedTimetamp = this.passwordChangedAt.getTime() / 1000
         return changedTimetamp > JWTTimestamp
     }
     return false
+}
+// password reset token
+userSchema.methods.createResetToken = function () {
+    let resetToken = crypto.randomBytes(32).toString('hex') // random token
+    this.passwordResetToken = crypto //hashed token
+        .createHash('sha256')
+        .update(resetToken)
+        .digest('hex')
+    this.passwordResetExpires = Date.now() + 10 * 60 * 1000
+    return resetToken
 }
 
 let User = mongoose.model('User', userSchema)

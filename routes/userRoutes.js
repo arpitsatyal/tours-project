@@ -14,4 +14,7 @@ router.route('/:id')
 .patch(usersController.updateUser)
 .delete(usersController.deleteUser)
 
+router.post('/forgotPassword', authController.forgotPassword)
+router.patch('/resetPassword/:token', authController.resetPassword)
+
 module.exports = router
