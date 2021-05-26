@@ -7,13 +7,25 @@ let crypto = require('crypto')
 
 let signToken = id => jwt.sign({ id }, process.env.JWT_SECRET)
 
-exports.signup = catchAsync(async (req, res, next) => {
-    let user = await User.create(req.body)
+let sendToken = (user, res, statusCode) => {
     let token = signToken(user._id)
-    res.status(201).json({
+let cookieOptions =  {
+        expires: new Date(
+            Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000),
+            httpOnly: true
+    }
+    if(process.env.NODE_ENV === 'production') cookieOptions.secure = true
+    res.cookie('jwt', token, cookieOptions)
+    user.password = undefined
+     res.status(201).json({
         status: 'success',
         user, token
     })
+}
+
+exports.signup = catchAsync(async (req, res, next) => {
+    let user = await User.create(req.body)
+    sendToken(user, res, 201)
 })
 
 exports.login = catchAsync(async (req, res, next) => {
@@ -22,12 +34,7 @@ exports.login = catchAsync(async (req, res, next) => {
     if (user) {
         let isCorrect = await user.correctPassword(password, user.password)
         if (!isCorrect) return next(new AppError('invalid email or password', 401))
-        let token = signToken(user._id)
-        res.status(201).json({
-            status: 'success',
-            token
-        })
-
+       sendToken(user, res, 200)
     } else {
         next(new AppError('invalid email or password', 401))
     }
@@ -104,6 +111,19 @@ exports.resetPassword = catchAsync(async (req, res, next) => {
     user.passwordResetExpires = undefined
     await user.save()
     // 3 login the user, send JWT
-    let token = signToken(user._id)
-    res.status(200).json({ status: 'success', token })
+    sendToken(user, res, 200)
+})
+
+exports.updatePassword = catchAsync(async(req, res, next) => {
+    // get user from collection
+    let user = await User.findById(req.user._id).select('+password')
+    // check if the current password is correct
+    let isCorrect = await user.correctPassword(req.body.password, user.password)
+    // if yes update the pswd
+    if(!isCorrect) return next(new AppError('invalid password', 401))
+    user.password = req.body.newpassword
+    user.passwordConfirm = req.body.newpassword
+    await user.save()
+    // send jwt
+    sendToken(user, res, 200)
 })
