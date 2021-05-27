@@ -18,6 +18,7 @@ exports.getAllReviews = catchAsync(async(req, res, next) => {
         reviews
     })
 })
+
 exports.createReview = handlerFactory.createOne(Review)
 exports.updateReview = handlerFactory.updateOne(Review)
 exports.deleteReview = handlerFactory.deleteOne(Review)

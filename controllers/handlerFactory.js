@@ -35,3 +35,5 @@ exports.updateOne = Model => catchAsync(async (req, res, next) => {
             tour: doc
         })
     })
+
+// to make code less eutai
