@@ -1,6 +1,6 @@
 let User = require('../models/userModel')
 let catchAsync = require('../utils/catchAsync')
-let AppError = require('../utils/appError')
+let handlerFactory = require('./handlerFactory')
 
 exports.getAllUsers = catchAsync(async(req,res,next) => {
     let users = await User.find()
@@ -16,18 +16,9 @@ exports.getOneUser = catchAsync(async(req,res,next) => {
     })
 })
 
-exports.updateUser = catchAsync(async(req,res,next) => {
-    res.status(200).json({
-        status: 'success'
-    })
-})
+exports.updateUser = handlerFactory.updateOne(User)
 
-exports.deleteUser =  catchAsync(async(req,res,next) => {
-    res.status(204).json({
-        status: 'success',
-        data: null
-    })
-})
+exports.deleteUser = handlerFactory.deleteOne(User)
 
 exports.updateMe = catchAsync(async(req, res, next) => {
     let filteredBody = filterObj(req.body, 'name', 'email')

@@ -45,11 +45,11 @@ let tourSchema = new mongoose.Schema({
         type: Number,
         // own validator function
         validate: {
-        validator: function(val) {
-            return val < this.price
-        },
-        message: 'discount price {VALUE} cannot be greater than the price'
-    }
+            validator: function (val) {
+                return val < this.price
+            },
+            message: 'discount price {VALUE} cannot be greater than the price'
+        }
     },
     summary: {
         type: String,
@@ -74,7 +74,37 @@ let tourSchema = new mongoose.Schema({
     secretTour: {
         type: Boolean,
         default: false
-    }
+    },
+    startLocation: {
+        // GeoJSON
+        type: {
+            type: String,
+            default: 'Point',
+            enum: ['Point']
+        },
+        coordinates: [Number],
+        address: String,
+        description: String
+    },
+    locations: [
+        {
+            type: {
+                type: String,
+                default: 'Point',
+                enum: ['Point']
+            },
+            coordinates: [Number],
+            address: String,
+            description: String,
+            day: Number
+        }
+    ],
+    guides: [
+        {
+            type: mongoose.Schema.ObjectId,
+            ref: 'User'
+        }
+    ]
 }, {
     toJSON: { virtuals: true }
 }, {
@@ -85,17 +115,19 @@ tourSchema.virtual('duartionWeeks').get(function () {
     return this.duration / 7
     // this points to the current document
 })
+// virtual populate
+tourSchema.virtual('reviews', {
+    ref: 'Review',
+    foreignField: 'tour',
+    localField: '_id'
+})
+
 // document middleware -- runs before the save and create command
 // but not on insertMany
 tourSchema.pre('save', function (next) {
     this.slug = slugify(this.name, { lower: true })
     next()
 })
-
-// tourSchema.post('save', function(doc, next) {
-//     console.log(doc)
-//     next()
-// })
 
 // query middleware -- this referes to the current query
 tourSchema.pre(/^find/, function (next) {
@@ -104,8 +136,11 @@ tourSchema.pre(/^find/, function (next) {
     next()
 })
 
-tourSchema.post(/^find/, function (docs, next) {
-    console.log(`query took ${Date.now() - this.start} ms.`)
+tourSchema.pre(/^find/, function (next) {
+    this.populate({
+        path: 'guides',
+        select: '-__v -passwordChangedAt'
+    })
     next()
 })
 

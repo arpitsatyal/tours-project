@@ -2,6 +2,9 @@ let express = require('express')
 let router = express.Router()
 let tourController = require('../controllers/tourController')
 let authController = require('../controllers/authController')
+let reviewRouter = require('./reviewRoutes')
+
+router.use('/:tourId/reviews', reviewRouter)
 
 // router.param('id', tourController.checkId)
 router.route('/top-5-cheap').get(tourController.aliasTopTours, tourController.getAllTours)
@@ -17,5 +20,9 @@ router.route('/:id')
 .patch(tourController.updateTour)
 .delete(authController.protect, 
     authController.restrictTo('admin', 'lead-guide'), tourController.deleteTour)
+
+// router.route('/:tourId/reviews')
+// .post(authController.protect, 
+//     authController.restrictTo('user'), reviewController.createReview)
 
 module.exports = router

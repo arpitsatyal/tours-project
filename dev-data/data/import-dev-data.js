@@ -12,7 +12,7 @@ mongoose.connect(DB, {
 })
 .then(() => console.log('db connected!'))
 
-let tours = JSON.parse(fs.readFileSync(`${__dirname}/tours-simple.json`, 'utf-8'))
+let tours = JSON.parse(fs.readFileSync(`${__dirname}/tours.json`, 'utf-8'))
 let importData = async () => {
   try {
     await Tour.create(tours)
