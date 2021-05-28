@@ -6,20 +6,31 @@ exports.getAllUsers = catchAsync(async(req,res,next) => {
     let users = await User.find()
     res.status(200).json({
         status: 'success',
+        result: users.length,
         users
     })
 })
 
-exports.getOneUser = catchAsync(async(req,res,next) => {
-    res.status(200).json({
-        status: 'success'
-    })
+exports.setUserId = catchAsync(async(req, res, next) => {
+    req.params.id = req.user._id
+    next()
 })
 
+exports.getOneUser = handlerFactory.getOne(User)
 exports.updateUser = handlerFactory.updateOne(User)
-
 exports.deleteUser = handlerFactory.deleteOne(User)
 
+exports.getMe = handlerFactory.getOne(User)
+
+let filterObj = (obj, ...allowedFields) => {
+    let toSend = {}
+   let reqBodyFields = Object.keys(obj)
+   reqBodyFields.forEach(el => {
+       if(allowedFields.includes(el)) toSend[el] = obj[el]
+   })
+    return toSend
+ }
+ 
 exports.updateMe = catchAsync(async(req, res, next) => {
     let filteredBody = filterObj(req.body, 'name', 'email')
     let updatedUser = await User.findByIdAndUpdate(req.user._id, filteredBody, {
@@ -37,11 +48,3 @@ exports.deleteMe = catchAsync(async(req, res, next) => {
     })
 })
 
-let filterObj = (obj, ...allowedFields) => {
-   let toSend = {}
-  let reqBodyFields = Object.keys(obj)
-  reqBodyFields.forEach(el => {
-      if(allowedFields.includes(el)) toSend[el] = obj[el]
-  })
-   return toSend
-}
