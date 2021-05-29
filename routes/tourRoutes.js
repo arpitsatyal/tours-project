@@ -17,15 +17,19 @@ router.route('/tour-monthly-plan/:year').get(
 router.route('/')
 .get(tourController.getAllTours)
 .post(
-    authController.protect,
-     authController.restrictTo('admin', 'lead-guide'),
+    // authController.protect,
+    //  authController.restrictTo('admin', 'lead-guide'),
     tourController.createTour)
 
 router.route('/:id')
 .get(tourController.getOneTour)
-.patch(authController.protect, 
-    authController.restrictTo('admin', 'lead-guide'), tourController.updateTour)
-.delete(authController.protect, 
-    authController.restrictTo('admin', 'lead-guide'), tourController.deleteTour)
+.patch(
+    // authController.protect, 
+    // authController.restrictTo('admin', 'lead-guide'), 
+    tourController.updateTour)
+.delete(
+    // authController.protect, 
+    // authController.restrictTo('admin', 'lead-guide'), 
+    tourController.deleteTour)
 
 module.exports = router

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { TourService } from '../services/tours.service';
+import { TourService } from 'src/app/services/tours.service';
 
 @Component({
   selector: 'app-tours',
@@ -23,4 +23,11 @@ export class ToursComponent implements OnInit {
       console.log(this.tours)
     }, err => console.log(err))
   }
+
+  deleteTour(id: string) {
+    this.toursService.deleteTour(id)
+    .subscribe(() => {
+      this.getAllTours()
+    }, err => console.log(err))
+}
 }

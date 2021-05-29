@@ -1,13 +1,13 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router'
-import { WelcomeComponent } from './welcome/welcome.component';
+import { WelcomeComponent } from './components/welcome/welcome.component';
 
 let routes: Routes = [
     {
         path: '', pathMatch: 'full', component: WelcomeComponent
     },
    {
-       path: 'tours', loadChildren: './tours/tours.module#ToursModule'
+       path: 'tours', loadChildren: './components/tours/tours.module#ToursModule'
    }
 ]
 @NgModule({
