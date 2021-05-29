@@ -1,6 +1,7 @@
 let express = require('express')
 let app = express()
 let morgan = require('morgan')
+let cors = require('cors')
 let rateLimit = require('express-rate-limit')
 let helmet = require('helmet')
 let mongoSanitize = require('express-mongo-sanitize')
@@ -24,7 +25,8 @@ let limiter = rateLimit({
 
 app.use('/api', limiter)
 app.use(express.json({ limit: '200mb' }))
-app.use(express.urlencoded({ extended: false }));
+app.use(express.urlencoded({ extended: false }))
+app.use(cors())
 
 // data sanitization vs NOSQL query injection
 app.use(mongoSanitize())
