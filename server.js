@@ -22,7 +22,7 @@ let app = require('./app')
 let port = process.env.PORT || 3000
 let server = app.listen(port, () => console.log(`app running on...${port}`))
 
-// unhandled rejection
+// unhandled rejections
 // process.on('unhandledRejection', err => {
 //     console.log('unhandled rejection. shutting down...')
 //     console.log(err.name, err.message)

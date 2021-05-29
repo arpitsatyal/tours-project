@@ -10,14 +10,14 @@ function sendErrorDev(err, res) {
 }
 
 function sendErrorProd(err, res) {
-    //operational errors, trusted error -- send msg to client
+    //operational errors, trusted error --- send msg to client
     if (err.isOperational) {
         res.status(err.statusCode).json({
             status: err.status,
             message: err.message
         })
     } else {
-        // programming or unknown errors -- so dont leak the errors
+        // programming or unknown errors --- so dont leak the errors
         console.error('error!', err)
         res.status(500).json({
             status: 'err',
