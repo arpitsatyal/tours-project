@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { notifyService } from 'src/app/services/notify.service';
 import { TourService } from 'src/app/services/tours.service';
 
 @Component({
@@ -9,7 +10,8 @@ import { TourService } from 'src/app/services/tours.service';
 export class ToursComponent implements OnInit {
   tours = []
   constructor(
-    private toursService: TourService
+    private toursService: TourService,
+    private notify: notifyService
   ) { }
 
   ngOnInit(): void {
@@ -28,6 +30,7 @@ export class ToursComponent implements OnInit {
     this.toursService.deleteTour(id)
     .subscribe(() => {
       this.getAllTours()
+      this.notify.showSuccess('tour deleted!')
     }, err => console.log(err))
 }
 }

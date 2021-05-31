@@ -1,21 +1,26 @@
-import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
 import { AppComponent } from './app.component';
 import { RouterModule } from '@angular/router';
 import { AppRoutingModule } from './app.routing';
 import { ToursModule } from './components/tours/tours.module';
+import { ToastrModule } from 'ngx-toastr';
+import { notifyService } from './services/notify.service';
+import { ServicesModule } from './services/service.module';
 
 @NgModule({
   declarations: [
     AppComponent
   ],
   imports: [
-    BrowserModule,
+    BrowserAnimationsModule,
     RouterModule,
     AppRoutingModule,
-    ToursModule
+    ToursModule,
+    ToastrModule.forRoot(),
+    ServicesModule
   ],
-  providers: [],
+  providers: [notifyService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

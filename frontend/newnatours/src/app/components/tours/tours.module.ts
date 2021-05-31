@@ -18,9 +18,7 @@ import { FormsModule } from '@angular/forms';
     ToursRoutingModule,
     HttpClientModule,
     FormsModule
-  ],
-  providers: [
-    TourService
   ]
+  
 })
 export class ToursModule { }

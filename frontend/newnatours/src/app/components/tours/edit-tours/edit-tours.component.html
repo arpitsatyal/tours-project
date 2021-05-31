@@ -1,1 +1,35 @@
-<p>edit-tours works!</p>
+<h2>Edit Tour</h2>
+
+<form class="formGroup">
+    <label for="name">name</label>
+    <input class="form-control" type="text" placeholder="name" name="name" [(ngModel)]="tour.name">
+
+    <label for="maxGroupSize">maxGroupSize</label>
+    <input class="form-control" type="text" placeholder="maxGroupSize" name="maxGroupSize"
+        [(ngModel)]="tour.maxGroupSize">
+
+    <label for="duration">duration</label>
+    <input class="form-control" type="number" placeholder="duration" name="duration" [(ngModel)]="tour.duration">
+
+    <label for="difficulty">difficulty</label> <br>
+    <input type="radio" id="male" name="easy" [(ngModel)]="tour.difficulty" value="easy">
+    <label for="easy">Easy</label><br>
+    <input type="radio" id="female" name="medium" [(ngModel)]="tour.difficulty" value="medium">
+    <label for="medium">Medium</label><br>
+    <input type="radio" id="other" name="difficult" [(ngModel)]="tour.difficulty" value="difficult">
+    <label for="difficult">Difficult</label>
+    <br> 
+
+    <label for="price">price</label>
+    <input class="form-control" type="number" placeholder="price" name="price" [(ngModel)]="tour.price">
+
+    <label for="summary">summary</label>
+    <input class="form-control" type="text" placeholder="summary" name="summary" [(ngModel)]="tour.summary">
+
+    <label for="startDate">startDate</label>
+    <input class="form-control" type="Date" placeholder="startDate" name="startDate" [(ngModel)]="tour.startDate">
+    <br>
+    <button class="btn btn-primary" (click)="editTour(tour, tourId)" *ngIf="!submitting">Submit</button>
+    <button class="btn btn-primary" *ngIf="submitting">Submitting...</button>
+
+</form>

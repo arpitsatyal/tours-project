@@ -1,11 +1,12 @@
 export class Tour {
+    _id: number | string
     name: string
     maxGroupSize: Number
     duration: Number
     difficulty: String
     price: Number
     summary: String
-    startDate: Date
+    startDate: Array<Date>
 
     constructor(details: any) {
         this.name = details.name || ''

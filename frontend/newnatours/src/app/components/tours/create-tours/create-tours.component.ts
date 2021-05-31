@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Tour } from 'src/app/models/tourModel';
+import { notifyService } from 'src/app/services/notify.service';
 import { TourService } from 'src/app/services/tours.service';
 
 @Component({
@@ -13,7 +14,8 @@ export class CreateToursComponent implements OnInit {
   submitting = false
   constructor(
     public tourService: TourService,
-    public router: Router
+    public router: Router,
+    public notifyService: notifyService
   ) { }
 
   ngOnInit(): void {
@@ -25,12 +27,13 @@ export class CreateToursComponent implements OnInit {
     this.tourService.createTour(tour)
     .subscribe(res => {
       setTimeout(() => {
+        this.notifyService.showSuccess('tour created!')
         this.submitting = false
         this.router.navigate(['/tours'])
       }, 3000)
     }, err => {
       this.submitting = false
-      console.log(err)
+      this.notifyService.showError(err)
     })
   }
 }

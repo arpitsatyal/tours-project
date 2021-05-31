@@ -1,0 +1,17 @@
+import { HttpHeaders } from "@angular/common/http"
+import { environment } from "src/environments/environment"
+
+
+export class BaseService {
+    url
+    constructor(postUrl) {
+        this.url = environment.BaseUrl + postUrl + '/'
+    }
+    setHeaders() {
+        return {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json'
+            })
+    }
+ }
+}

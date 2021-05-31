@@ -1,4 +1,5 @@
 <h2>Create Tour</h2>
+
 <form class="formGroup">
     <label for="name">name</label>
     <input class="form-control" type="text" placeholder="name" name="name" [(ngModel)]="tour.name">
@@ -30,6 +31,5 @@
     <br>
     <button class="btn btn-primary" (click)="createTour(tour)" *ngIf="!submitting">Submit</button>
     <button class="btn btn-primary" *ngIf="submitting">Submitting...</button>
-
 
 </form>

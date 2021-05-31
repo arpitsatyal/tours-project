@@ -1,5 +1,6 @@
 let catchAsync = require('../utils/catchAsync')
 let AppError = require('../utils/appError')
+let mapTours = require('../utils/mapTours')
 
 exports.deleteOne = Model => {
     return catchAsync(async (req, res, next) => {
@@ -15,7 +16,8 @@ exports.deleteOne = Model => {
 }
 
 exports.createOne = Model => catchAsync(async (req, res, next) => {
-    let doc = await Model.create(req.body)
+	let toCreate = mapTours({}, req.body)
+    let doc = await Model.create(toCreate)
     res.status(201).json({
         status: 'success',
         data: doc
@@ -23,7 +25,8 @@ exports.createOne = Model => catchAsync(async (req, res, next) => {
 })
 
 exports.updateOne = Model => catchAsync(async (req, res, next) => {
-    let doc = await Model.findByIdAndUpdate(req.params.id, req.body, {
+    toUpdate = mapTours({}, req.body)
+    let doc = await Model.findByIdAndUpdate(req.params.id, toUpdate, {
         new: true,
         runValidators: true
     })
