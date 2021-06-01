@@ -1,1 +1,9 @@
-<p>HELLOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO</p>
+<div *ngIf="isLoggedIn()">
+    <app-tours></app-tours>
+</div>
+<div *ngIf="!isLoggedIn()">
+    <h1>welcome to natours </h1>
+    <a routerLink="/auth/login">login</a>
+    <br>
+    <a routerLink="/auth/signup">sign up</a>
+</div>

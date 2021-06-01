@@ -14,4 +14,12 @@ export class BaseService {
             })
     }
  }
+ setHeadersWithToken() {
+        return {
+            headers: new HttpHeaders({
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${localStorage.getItem('token')}`
+            })
+        }
+}   
 }

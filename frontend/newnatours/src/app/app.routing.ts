@@ -8,6 +8,9 @@ let routes: Routes = [
     },
    {
        path: 'tours', loadChildren: './components/tours/tours.module#ToursModule'
+   },
+   {
+       path: 'auth', loadChildren: './components/auth/auth.module#AuthModule'
    }
 ]
 @NgModule({

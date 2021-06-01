@@ -9,7 +9,6 @@ export class notifyService {
     ) {
 
     }
-
     showSuccess(msg) {
         this.toastrService.success(msg)
     }
@@ -18,11 +17,11 @@ export class notifyService {
     }
     showError(e) {
         console.log(e)
-        if(typeof(e.error.message === 'string' && e.error.message)) {
+        if (typeof (e.error.message === 'string' && e.error.message)) {
             this.toastrService.error(e.error.message)
-        } else if(e.error.message && typeof(e.error.message === 'object')) {
+        } else if (e.error.message && typeof (e.error.message === 'object')) {
             this.toastrService.error(e.error.message.errmsg)
-        } else 
-        this.toastrService.error('something went wrong!')
-        }
+        } else
+            this.toastrService.error('something went wrong!')
     }
+}

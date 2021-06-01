@@ -1,0 +1,53 @@
+    <div class="login-form">
+      <h2 class="heading-secondary ma-bt-lg">sign up your new account</h2>
+      <form class="form form--login"  #registerForm="ngForm" novalidate>
+        
+        <div class="form__group">
+            <label class="form__label" for="email">Username</label>
+            <input class="form__input" type="text" placeholder="username" required  name="name" [(ngModel)]="user.name" #username="ngModel">
+            <div class="danger" [hidden]="username.pristine || username.valid">
+                required field *
+            </div>
+          </div>
+
+        <div class="form__group">
+          <label class="form__label" for="email">Email address</label>
+          <input class="form__input" type="email" placeholder="you@example.com" required  name="email" [(ngModel)]="user.email" #email="ngModel">
+          <div class="danger" *ngIf="email.errors && email.dirty">
+              <div *ngIf="email.errors.required">
+                required field *
+              </div>
+              <div *ngIf="email.errors.email">
+                invalid email *
+              </div>
+          </div>
+        </div>
+
+        <div class="form__group ma-bt-md">
+          <label class="form__label" for="password">Password</label>
+          <input class="form__input" type="password" placeholder="••••••••" required name="password" [(ngModel)]="user.password" #password="ngModel" minlength="5">
+          <div class="danger" *ngIf="password.dirty && password.errors">
+            <div *ngIf="password.errors.required">
+                required field *
+            </div>
+            <div *ngIf="password.errors.minLength">
+                weak password
+            </div>
+          </div>
+        </div>
+
+        <div class="form__group ma-bt-md">
+            <label class="form__label" for="password">Confirm Password</label>
+            <input class="form__input" type="password" placeholder="••••••••" required name="passwordConfirm" [(ngModel)]="user.passwordConfirm" #passwordConfirm="ngModel">
+            <div class="danger" *ngIf="passwordConfirm.dirty && passwordConfirm.invalid">
+               required feild *
+              </div>
+          </div>
+
+        <div class="form__group">
+        <button [disabled]="registerForm.invalid" class="btn btn-primary" (click)="signup()" *ngIf="!submitting">Sign Up</button>
+        <button class="btn btn-primary" *ngIf="submitting">Signing up...</button>
+        </div>
+
+      </form>
+    </div>

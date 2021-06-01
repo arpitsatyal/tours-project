@@ -5,8 +5,8 @@ import { RouterModule } from '@angular/router';
 import { AppRoutingModule } from './app.routing';
 import { ToursModule } from './components/tours/tours.module';
 import { ToastrModule } from 'ngx-toastr';
-import { notifyService } from './services/notify.service';
 import { ServicesModule } from './services/service.module';
+import { AuthModule } from './components/auth/auth.module';
 
 @NgModule({
   declarations: [
@@ -17,10 +17,11 @@ import { ServicesModule } from './services/service.module';
     RouterModule,
     AppRoutingModule,
     ToursModule,
+    AuthModule,
     ToastrModule.forRoot(),
     ServicesModule
   ],
-  providers: [notifyService],
+  providers: [],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

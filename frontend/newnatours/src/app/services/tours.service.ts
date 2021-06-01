@@ -14,12 +14,12 @@ export class TourService extends BaseService {
         return this.http.get(this.url, this.setHeaders())
     }
     createTour(tour: Tour) {
-        return this.http.post(this.url, tour, this.setHeaders())
+        return this.http.post(this.url, tour, this.setHeadersWithToken())
     }
     editTour(tour: Tour, tourId) {
-        return this.http.patch(this.url + tourId, tour, this.setHeaders())
+        return this.http.patch(this.url + tourId, tour, this.setHeadersWithToken())
     }
     deleteTour(tourId) {
-        return this.http.delete(this.url + tourId, this.setHeaders())
+        return this.http.delete(this.url + tourId, this.setHeadersWithToken())
     }
 }

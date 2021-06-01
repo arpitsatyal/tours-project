@@ -7,7 +7,6 @@ import { HttpClientModule } from '@angular/common/http';
 import { EditToursComponent } from './edit-tours/edit-tours.component';
 import { CreateToursComponent } from './create-tours/create-tours.component';
 import { ToursComponent } from './get-tours/tours.component';
-import { TourService } from 'src/app/services/tours.service';
 import { WelcomeComponent } from '../welcome/welcome.component';
 import { FormsModule } from '@angular/forms';
 
