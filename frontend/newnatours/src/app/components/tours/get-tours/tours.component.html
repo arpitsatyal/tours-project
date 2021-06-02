@@ -58,7 +58,7 @@
           <span class="card__footer-value">{{tour.ratingsAverage}}</span>
           <span class="card__footer-text"> rating ({{tour.ratingsQuantity}})</span>
         </p>
-        <a href="#" class="btn btn--green btn--small">Details</a>
+        <a routerLink="/tours/getOneTour/{{tour._id}}" class="btn btn--green btn--small">Details</a>
         <a routerLink="/tours/editTour/{{tour._id}}" class="btn btn-primary btn-sm">Edit Tour</a> 
         <button class="btn btn-danger" (click)="deleteTour(tour._id)">Delete Tour</button> 
       </div>

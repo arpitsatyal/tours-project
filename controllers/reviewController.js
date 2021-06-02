@@ -19,7 +19,16 @@ exports.getAllReviews = catchAsync(async(req, res, next) => {
     })
 })
 
-exports.createReview = handlerFactory.createOne(Review)
+exports.createReview = catchAsync(async (req, res, next) => {
+	console.log(req.body)
+    let doc = await Review.create(req.body)
+    res.status(201).json({
+        status: 'success',
+        data: doc
+    })
+})
+
+// exports.createReview = handlerFactory.createOne(Review)
 exports.getOneReview = handlerFactory.getOne(Review)
 exports.updateReview = handlerFactory.updateOne(Review)
 exports.deleteReview = handlerFactory.deleteOne(Review)

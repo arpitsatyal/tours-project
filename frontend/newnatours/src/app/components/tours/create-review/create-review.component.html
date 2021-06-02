@@ -1,0 +1,31 @@
+<main class="main">
+    <div class="login-form">
+      <h2 class="heading-secondary ma-bt-lg">create review</h2>
+      <form class="form form--login"  #loginForm="ngForm" novalidate>
+        <div class="form__group">
+          <label class="form__label" for="review">review</label>
+          <input class="form__input" type="text" required  name="review" required [(ngModel)]="creview.review" #review="ngModel">
+          <div class="danger" *ngIf="review.invalid && review.dirty">
+            required field*
+        </div>
+   
+        </div>
+        <div class="form__group ma-bt-md">
+          <label class="form__label" for="rating">rating</label>
+          <input class="form__input"  type="number"  required name="rating" required [(ngModel)]="creview.rating" #rating="ngModel" maxlength="5">
+          <div class="danger" *ngIf="rating.errors && rating.dirty">
+              <div *ngIf="rating.errors.required">
+                  required feild *
+              </div>
+              <div *ngIf="rating.errors.maxlength">
+                rating cannot be greater than 5
+            </div>
+        </div>
+        </div>
+        <div class="form__group">
+        <button [disabled]="loginForm.invalid" class="btn btn-primary" (click)="createReview()" *ngIf="!submitting">create review</button>
+        <button class="btn btn-primary" *ngIf="submitting">submitting...</button>
+        </div>
+      </form>
+    </div>
+  </main>

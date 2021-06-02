@@ -9,9 +9,13 @@ import { CreateToursComponent } from './create-tours/create-tours.component';
 import { ToursComponent } from './get-tours/tours.component';
 import { WelcomeComponent } from '../welcome/welcome.component';
 import { FormsModule } from '@angular/forms';
+import { GetOneTourComponent } from './get-one-tour/get-one-tour.component';
+import { ReviewsComponent } from './reviews/reviews.component';
+import { CreateReviewComponent } from './create-review/create-review.component';
 
 @NgModule({
-  declarations: [ToursComponent, WelcomeComponent, HeaderComponent, FooterComponent, EditToursComponent, CreateToursComponent],
+  declarations: [ToursComponent, WelcomeComponent,
+     HeaderComponent, FooterComponent, EditToursComponent, CreateToursComponent, GetOneTourComponent, ReviewsComponent, CreateReviewComponent],
   imports: [
     CommonModule,
     ToursRoutingModule,

@@ -1,0 +1,143 @@
+<app-header></app-header>
+<!-- <section class="section-header">
+  <div class="heading-box">
+    <h1 class="heading-primary">
+      <span
+        >{{tour.name.split(' ')[0] + ' ' + tour.name.split(' ')[1]}} <br />
+        {{tour.name.split(' ')[2] + ' ' + 'Tour'}}</span
+      >
+    </h1>
+    <div class="heading-box__group">
+      <div class="heading-box__detail">
+        <svg class="heading-box__icon">
+          <use xlink:href="../../../assetsimg/icons.svg#icon-clock"></use>
+        </svg>
+        <span class="heading-box__text">{{tour.duration}}</span>
+      </div>
+      <div class="heading-box__detail">
+        <svg class="heading-box__icon">
+          <use xlink:href="../../../assetsimg/icons.svg#icon-map-pin"></use>
+        </svg>
+        <span class="heading-box__text">{{tour.startLocation}}</span>
+      </div>
+    </div>
+  </div>
+</section> -->
+
+  <section class="section-description">
+    <div class="overview-box">
+      <div>
+        <div class="overview-box__group">
+          <h2 class="heading-secondary ma-bt-lg">Quick facts</h2>
+          <div class="overview-box__detail">
+            <svg class="overview-box__icon">
+              <use xlink:href="../../../assets/img/icons.svg#icon-calendar"></use>
+            </svg>
+            <span class="overview-box__label">Next date</span>
+            <span class="overview-box__text">{{tour.startDates[0] | date: 'dd/MM/yyyy' }}</span>
+          </div>
+          <div class="overview-box__detail">
+            <svg class="overview-box__icon">
+              <use xlink:href="../../../assets/img/icons.svg#icon-trending-up"></use>
+            </svg>
+            <span class="overview-box__label">Difficulty</span>
+            <span class="overview-box__text">{{tour.difficulty}}</span>
+          </div>
+          <div class="overview-box__detail">
+            <svg class="overview-box__icon">
+              <use xlink:href="../../../assets/img/icons.svg#icon-user"></use>
+            </svg>
+            <span class="overview-box__label">Participants</span>
+            <span class="overview-box__text">{{tour.maxGroupSize}} people</span>
+          </div>
+          <div class="overview-box__detail">
+            <svg class="overview-box__icon">
+              <use xlink:href="../../../assets/img/icons.svg#icon-star"></use>
+            </svg>
+            <span class="overview-box__label">Rating</span>
+            <span class="overview-box__text">{{tour.ratingsAverage}} / 5</span>
+          </div>
+        </div>
+
+        <div class="overview-box__group">
+          <h2 class="heading-secondary ma-bt-lg" >Your tour guides</h2>
+          <div *ngFor="let guide of tour.guides">
+          <div class="overview-box__detail" *ngIf="guide.role === 'lead-guide'">
+            <img
+              src="../../../assets/img/users/{{guide.photo}}"
+              alt="Lead guide"
+              class="overview-box__img"
+            />
+            <span class="overview-box__label">Lead guide</span>
+            <span class="overview-box__text">{{guide.name}}</span>
+          </div>
+          <div class="overview-box__detail" *ngIf="guide.role === 'guide'">
+            <img
+              src="../../../assets/img/users/{{guide.photo}}"
+              alt="Tour guide"
+              class="overview-box__img"
+            />
+            <span class="overview-box__label">Tour guide</span>
+            <span class="overview-box__text">{{guide.name}}</span>
+          </div>
+        </div>
+      </div>
+      </div>
+    </div>
+
+    <div class="description-box">
+      <h2 class="heading-secondary ma-bt-lg">About the park camper tour</h2>
+      <p class="description__text">
+     {{tour.summary}}
+      </p>
+    </div>
+  </section>
+
+  <section class="section-pictures">
+    <div class="picture-box">
+      <img
+        class="picture-box__img picture-box__img--1"
+        src="../../../assets/img/tours/tour-5-1.jpg"
+        alt="The Park Camper Tour 1"
+      />
+    </div>
+    <div class="picture-box">
+      <img
+        class="picture-box__img picture-box__img--2"
+        src="../../../assets/img/tours/tour-5-2.jpg"
+        alt="The Park Camper Tour 1"
+      />
+    </div>
+    <div class="picture-box">
+      <img
+        class="picture-box__img picture-box__img--3"
+        src="../../../assets/img/tours/tour-5-3.jpg"
+        alt="The Park Camper Tour 1"
+      />
+    </div>
+  </section>
+
+  <!-- <section class="section-map">
+    <div id="map"></div>
+  </section> -->
+  
+<app-reviews></app-reviews>
+
+  <section class="section-cta">
+    <div class="cta">
+      <div class="cta__img cta__img--logo">
+        <img src="../../../assets/img/logo-white.png" alt="Natours logo" class="" />
+      </div>
+      <img src="../../../assets/img/tour-5-2.jpg" alt="" class="cta__img cta__img--1" />
+      <img src="../../../assets/img/tour-5-1.jpg" alt="" class="cta__img cta__img--2" />
+
+      <div class="cta__content">
+        <h2 class="heading-secondary">What are you waiting for?</h2>
+        <p class="cta__text">
+          {{tour.duration}} days. 1 adventure. Infinite memories. Make it yours today!
+        </p>
+        <button class="btn btn--green span-all-rows">Book tour now!</button>
+      </div>
+    </div>
+  </section>
+  <app-footer></app-footer>
