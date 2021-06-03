@@ -29,7 +29,8 @@
         </div>
         <div class="form__group">
         <button [disabled]="loginForm.invalid" class="btn btn-primary" (click)="login()" *ngIf="!submitting">Login</button>
-        <button class="btn btn-primary" *ngIf="submitting">logging in...</button>
+        <button class="btn btn-primary" *ngIf="submitting">logging in...</button> <br> <br>
+        <a class="btn btn-primary" routerLink="/auth/forgotPassword">forgot password</a>
         </div>
       </form>
     </div>
