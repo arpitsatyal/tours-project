@@ -56,28 +56,31 @@ exports.getAllTours = catchAsync(async (req, res, next) => {
 })
 
 let mapTours = require('../utils/mapTours')
+const AppError = require('../utils/appError')
 
 exports.updateTour = catchAsync(async (req, res, next) => {
     toUpdate = mapTours({}, req.body)
-    let doc
-    if (toUpdate.startDate) {
-        doc = await Tour.findByIdAndUpdate(req.params.id, { $push: { startDates: toUpdate.startDate } }, {
-            new: true,
-            runValidators: true
+    // console.log(toUpdate)
+       let tour = Tour.findByIdAndUpdate(req.params.id, toUpdate, {
+           runValidators: true,
+           new: true
+       })
+       .then (async doc => {
+           if(toUpdate.startDate) {
+               await Tour.findByIdAndUpdate(req.params.id, { $push: { startDates: toUpdate.startDate }})
+                // await Tour.findByIdAndUpdate(req.params.id, { $push: { locations: { address: toUpdate.Location }}})
+                
+           }
+        res.status(200).json({
+            status: 'success',
+            doc
         })
-    } else {
-        doc = await Tour.findByIdAndUpdate(req.params.id, toUpdate, {
-            new: true,
-            runValidators: true
-        })
-    }
-    if (!doc) {
+       })
+       .catch(err => next(err))
+    if (!tour) {
         return next(new AppError('no tour found with that ID.', 404))
     }
-    res.status(200).json({
-        status: 'success',
-        tour: doc
-    })
+   
 })
 
 exports.getOneTour = handlerFactory.getOne(Tour, 'reviews')

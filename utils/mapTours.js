@@ -29,12 +29,14 @@ module.exports = (obj1, obj2) => {
     if(obj2.startDate) {
         obj1.startDate = obj2.startDate
     }
+    if(obj2.startLocation) {
+        obj1.startLocation = obj2.startLocation
+    }
     if(obj2.ratingsAverage) {
         obj1.ratingsAverage = obj2.ratingsAverage
     }
     if(obj2.ratingsQuantity) {
         obj1.ratingsQuantity = obj2.ratingsQuantity
     }
-    console.log(obj1)
     return obj1
 }
