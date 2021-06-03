@@ -16,4 +16,10 @@ export class ReviewService extends BaseService {
   createReview(review: Review, tourId) {
       return this.http.post(this.url + tourId + '/' + 'reviews', review, this.setHeadersWithToken())
   }
+  updateReview(reviewId, tourId, review) {
+    return this.http.patch(this.url + tourId + '/' + 'reviews' + '/' + reviewId, review, this.setHeadersWithToken())
+  }
+  deleteReview(reviewId, tourId) {
+      return this.http.delete(this.url + tourId + '/' + 'reviews' + '/' + reviewId, this.setHeadersWithToken())
+  }
 }

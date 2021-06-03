@@ -7,6 +7,7 @@ export class Tour {
     price: Number
     summary: String
     startDate: Array<Date>
+    startLocation: Array<String>
 
     constructor(details: any) {
         this.name = details.name || ''
@@ -16,5 +17,6 @@ export class Tour {
         this.price = details.price || ''
         this.summary = details.summary || ''
         this.startDate = details.startDate || ''
+        this.startLocation = details.startLocation || ''
     }
 }

@@ -14,7 +14,7 @@ router.route('/')
 
 router.route('/:id')
 .get(reviewController.getOneReview)
-.patch(authController.restrictTo('user'), reviewController.updateReview)
+.patch(authController.restrictTo('user'), reviewController.setTourIds, reviewController.updateReview)
 .delete(authController.restrictTo('user', 'admin'), reviewController.deleteReview)
 
 module.exports = router

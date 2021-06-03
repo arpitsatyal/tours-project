@@ -13,15 +13,18 @@ export class CreateReviewComponent implements OnInit {
 creview
 tourId
 submitting = false
+isUpdate = false
+reviewId
   constructor(
     private reviewService: ReviewService,
     private notify: notifyService,
-    private activatedRoute: ActivatedRoute,
-    private router: Router
+    private activatedRoute: ActivatedRoute
   ) { }
 
   ngOnInit(): void {
+    if(this.activatedRoute.snapshot.routeConfig.path.split('/')[1] === 'updateReview') this.isUpdate = true
     this.tourId = this.activatedRoute.snapshot.params.tourId
+    this.reviewId = this.activatedRoute.snapshot.params.reviewId
     this.creview = new Review({})
   }
   createReview() {
@@ -35,5 +38,11 @@ submitting = false
       this.submitting = false
       this.notify.showError(err)
     })
+  }
+  updateReview(reviewId) {
+    this.reviewService.updateReview(reviewId, this.tourId, this.creview)
+    .subscribe(() => {
+      this.notify.showInfo('review updated')
+    }, err => this.notify.showError(err))
   }
 }

@@ -9,6 +9,7 @@ import { TourService } from 'src/app/services/tours.service';
 })
 export class ToursComponent implements OnInit {
   tours = []
+  user
   constructor(
     private toursService: TourService,
     private notify: notifyService
@@ -16,6 +17,7 @@ export class ToursComponent implements OnInit {
 
   ngOnInit(): void {
     this.getAllTours()
+    this.user = JSON.parse(localStorage.getItem('user'))
   }
 
   getAllTours() {

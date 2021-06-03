@@ -19,8 +19,8 @@ exports.getAllReviews = catchAsync(async(req, res, next) => {
     })
 })
 
+
 exports.createReview = catchAsync(async (req, res, next) => {
-	console.log(req.body)
     let doc = await Review.create(req.body)
     res.status(201).json({
         status: 'success',
@@ -28,7 +28,22 @@ exports.createReview = catchAsync(async (req, res, next) => {
     })
 })
 
+exports.updateReview = catchAsync(async (req, res, next) => {
+	console.log(req.body)
+    let doc = await Review.findByIdAndUpdate(req.params.id, req.body, {
+        new: true,
+        runValidators: true
+    })
+    if (!doc) {
+        return next(new AppError('no tour found with that ID.', 404))
+    }
+    res.status(200).json({
+        status: 'success',
+        tour: doc
+    })
+})
+
 // exports.createReview = handlerFactory.createOne(Review)
 exports.getOneReview = handlerFactory.getOne(Review)
-exports.updateReview = handlerFactory.updateOne(Review)
+// exports.updateReview = handlerFactory.updateOne(Review)
 exports.deleteReview = handlerFactory.deleteOne(Review)

@@ -17,6 +17,8 @@ const routes: Routes = [
        path: 'getOneTour/:tourId', component: GetOneTourComponent
    }, {
        path: ':tourId/createReview', component: CreateReviewComponent
+   }, {
+       path: ':tourId/updateReview/:reviewId', component: CreateReviewComponent
    }
 ]
 

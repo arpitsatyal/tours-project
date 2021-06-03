@@ -12,21 +12,27 @@ export class ReviewsComponent implements OnInit {
 tourId
 reviews
 rating = [1,2,3,4,5]
-@Input() user
+user 
   constructor(
     private activatedRoute: ActivatedRoute,
     private reviewService: ReviewService,
     private notify: notifyService
   ) { 
-    console.log('in child ', this.user)
   }
 
   ngOnInit(): void {
+    this.user = JSON.parse(localStorage.getItem('user'))
     this.tourId = this.activatedRoute.snapshot.params.tourId
     this.reviewService.getReviews(this.tourId)
     .subscribe((res: any) => {
       this.reviews = res.reviews
     }, err => this.notify.showError(err))
   }
-  
-}
+
+  deleteReview(reviewId) {
+    this.reviewService.deleteReview(reviewId, this.tourId)
+    .subscribe(() => {
+      this.notify.showInfo('review deleted')
+    }, err => this.notify.showError(err))
+  }
+ }
