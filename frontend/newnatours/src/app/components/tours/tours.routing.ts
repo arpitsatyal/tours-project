@@ -5,6 +5,7 @@ import { CreateToursComponent } from './create-tours/create-tours.component';
 import { EditToursComponent } from './edit-tours/edit-tours.component';
 import { GetOneTourComponent } from './get-one-tour/get-one-tour.component';
 import { ToursComponent } from './get-tours/tours.component';
+import { SearchTourComponent } from './search-tour/search-tour.component';
 
 const routes: Routes = [
    {
@@ -19,6 +20,9 @@ const routes: Routes = [
        path: ':tourId/createReview', component: CreateReviewComponent
    }, {
        path: ':tourId/updateReview/:reviewId', component: CreateReviewComponent
+   },
+   {
+       path: 'searchTour', component: SearchTourComponent
    }
 ]
 

@@ -8,6 +8,7 @@ export class Tour {
     summary: String
     startDate: Array<Date>
     startLocation: Object
+    locations: Object
 
     constructor(details: any) {
         this.name = details.name || ''
@@ -18,8 +19,10 @@ export class Tour {
         this.summary = details.summary || ''
         this.startDate = details.startDate || ''
        this.startLocation = {
-           description: details.startLocation
-           
+           x: details.startLocation
        }
+       this.locations =  {
+               y: details.locations
+           }
     }
 }

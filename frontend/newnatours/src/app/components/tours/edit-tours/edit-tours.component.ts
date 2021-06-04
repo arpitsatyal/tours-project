@@ -10,7 +10,7 @@ import { TourService } from 'src/app/services/tours.service';
   styleUrls: ['./edit-tours.component.css']
 })
 export class EditToursComponent implements OnInit {
-  tour
+  tour 
   tourId 
   submitting
   constructor(

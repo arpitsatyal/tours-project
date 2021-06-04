@@ -1,9 +1,9 @@
 <div *ngIf="isLoggedIn()">
-    <app-tours></app-tours>
+    <app-get-tours></app-get-tours>
 </div>
 <div *ngIf="!isLoggedIn()">
     <h1>welcome to natours </h1>
-    <a routerLink="/auth/login">login</a>
-    <br>
-    <a routerLink="/auth/signup">sign up</a>
+    <a routerLink="/auth/login" class="btn btn-primary">login</a>
+    <br> <br>
+    <a routerLink="/auth/signup" class="btn btn-primary">sign up</a>
 </div>

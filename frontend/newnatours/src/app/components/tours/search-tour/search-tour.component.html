@@ -1,0 +1,56 @@
+<div *ngIf="!results.length">
+    <h2>Search Tour</h2>
+
+<form class="formGroup">
+    <!-- <label for="name">name</label>
+    <input class="form-control" type="text" placeholder="name" name="name" [(ngModel)]="tour.name"> -->
+
+    <label for="maxGroupSize">maxGroupSize</label> <br>
+    <input type="radio" id="male" name="0-10" [(ngModel)]="tour.maxGroupSize" value="0-10">
+    <label for="0-10">0-10</label><br>
+    <input type="radio" id="female" name="10-20" [(ngModel)]="tour.maxGroupSize" value="10-20">
+    <label for="10-20">10-20</label><br>
+    <input type="radio" id="other" name="20 +" [(ngModel)]="tour.maxGroupSize" value="20 +">
+    <label for="20 +">20 +</label>
+    <br> 
+
+    <label for="startLocation">Start Location</label> <br>
+    <select name="startLocation" [(ngModel)]="tour.startLocation" (change)="onstartLocationSelected(tour.startLocation)">
+      <option value="">select start location</option>
+      <option *ngFor="let location of startLocations">{{location}}</option>
+    </select>
+    <br>
+
+  <div *ngIf="showName">
+    <label for="name">name</label> <br>
+    <select name="name" [(ngModel)]="tour.name">
+      <option value="">select name</option>
+      <option *ngFor="let tour of names" [value]="tour.name">{{tour.name}}</option>
+    </select>
+    <br>
+  </div>
+
+    <label for="difficulty">difficulty</label> <br>
+    <input type="radio" id="male" name="easy" [(ngModel)]="tour.difficulty" value="easy">
+    <label for="easy">Easy</label><br>
+    <input type="radio" id="female" name="medium" [(ngModel)]="tour.difficulty" value="medium">
+    <label for="medium">Medium</label><br>
+    <input type="radio" id="other" name="difficult" [(ngModel)]="tour.difficulty" value="difficult">
+    <label for="difficult">Difficult</label>
+    <br> 
+
+    <label for="minPrice">minPrice</label>
+    <input class="form-control" type="number" placeholder="minPrice" name="minPrice" [(ngModel)]="tour.minPrice">
+
+    <label for="maxPrice">maxPrice</label>
+    <input class="form-control" type="number" placeholder="maxPrice" name="maxPrice" [(ngModel)]="tour.maxPrice">
+
+    <br>
+    <button class="btn btn-primary" (click)="searchTour()" *ngIf="!submitting">Submit</button>
+    <button class="btn btn-primary" *ngIf="submitting">Submitting...</button>
+</form>
+</div>
+
+<div *ngIf="results.length">
+    <app-get-tours [inputData]="results" (searchagain)="resetSearch()"></app-get-tours>
+</div>

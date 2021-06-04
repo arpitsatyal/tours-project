@@ -25,4 +25,7 @@ export class TourService extends BaseService {
     deleteTour(tourId) {
         return this.http.delete(this.url + tourId, this.setHeadersWithToken())
     }
+    searchTour(tour: Tour) {
+        return this.http.post(this.url + 'searchTour', tour, this.setHeaders())
+    }
 }

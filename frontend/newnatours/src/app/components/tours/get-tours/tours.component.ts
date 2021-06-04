@@ -1,38 +1,43 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 import { notifyService } from 'src/app/services/notify.service';
 import { TourService } from 'src/app/services/tours.service';
 
 @Component({
-  selector: 'app-tours',
+  selector: 'app-get-tours',
   templateUrl: './tours.component.html',
   styleUrls: ['./tours.component.css']
 })
 export class ToursComponent implements OnInit {
-  tours = []
-  user
+  allTours = []
+  user = JSON.parse(localStorage.getItem('user'))
+  @Input() inputData: any
+  @Output() searchagain = new EventEmitter()
   constructor(
     private toursService: TourService,
     private notify: notifyService
   ) { }
 
   ngOnInit(): void {
-    this.getAllTours()
-    this.user = JSON.parse(localStorage.getItem('user'))
-  }
-
-  getAllTours() {
     this.toursService.getAllTours()
     .subscribe((res: any) => {
-      this.tours = res.data.tours
-      console.log(this.tours)
+      if(this.inputData) {
+        this.allTours = this.inputData
+      } else {
+      this.allTours = res.data.tours
+      }
+    }, err => this.notify.showError(err))
+   
+  }
+
+  deleteTour(id: string, index) {
+    this.toursService.deleteTour(id)
+    .subscribe(() => {
+      this.allTours.splice(index, 1)
+      this.notify.showSuccess('tour deleted!')
     }, err => console.log(err))
   }
 
-  deleteTour(id: string) {
-    this.toursService.deleteTour(id)
-    .subscribe(() => {
-      this.getAllTours()
-      this.notify.showSuccess('tour deleted!')
-    }, err => console.log(err))
-}
+  searchAgain() {
+    this.searchagain.emit()
+  }
 }

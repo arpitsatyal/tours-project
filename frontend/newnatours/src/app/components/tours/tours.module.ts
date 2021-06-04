@@ -12,10 +12,11 @@ import { FormsModule } from '@angular/forms';
 import { GetOneTourComponent } from './get-one-tour/get-one-tour.component';
 import { ReviewsComponent } from './reviews/reviews.component';
 import { CreateReviewComponent } from './create-review/create-review.component';
+import { SearchTourComponent } from './search-tour/search-tour.component';
 
 @NgModule({
   declarations: [ToursComponent, WelcomeComponent,
-     HeaderComponent, FooterComponent, EditToursComponent, CreateToursComponent, GetOneTourComponent, ReviewsComponent, CreateReviewComponent],
+     HeaderComponent, FooterComponent, EditToursComponent, CreateToursComponent, GetOneTourComponent, ReviewsComponent, CreateReviewComponent, SearchTourComponent],
   imports: [
     CommonModule,
     ToursRoutingModule,

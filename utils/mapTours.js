@@ -14,14 +14,17 @@ module.exports = (obj1, obj2) => {
     if(obj2.price) {
         obj1.price = obj2.price
     }
+    if(obj2.minPrice) {
+        obj1.minPrice = obj2.minPrice
+    }
+    if(obj2.maxPrice) {
+        obj1.maxPrice = obj2.maxPrice
+    }
     if(obj2.summary) {
         obj1.summary = obj2.summary
     }
     if(obj2.images) {
         obj1.images = obj2.images
-    }
-    if(obj2.location) {
-        obj1.location = obj2.location
     }
     if(obj2.imageCover) {
         obj1.imageCover = obj2.imageCover
@@ -30,7 +33,14 @@ module.exports = (obj1, obj2) => {
         obj1.startDate = obj2.startDate
     }
     if(obj2.startLocation) {
-        obj1.startLocation = obj2.startLocation
+        if(obj2.startLocation.description) {
+            obj1.startLocation = obj2.startLocation
+        }
+    }
+    if(obj2.locations) {
+        if(obj2.locations.address) {
+            obj1.locations = obj2.locations
+        }
     }
     if(obj2.ratingsAverage) {
         obj1.ratingsAverage = obj2.ratingsAverage

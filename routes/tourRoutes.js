@@ -10,26 +10,29 @@ router.use('/:tourId/reviews', reviewRouter)
 router.route('/top-5-cheap').get(tourController.aliasTopTours, tourController.getAllTours)
 router.route('/tour-stats').get(tourStatsController.getTourStats)
 router.route('/tour-monthly-plan/:year').get(
-    authController.protect, 
+    authController.protect,
     authController.restrictTo('admin', 'lead-guide', 'guide'),
     tourStatsController.getMonthlyPlan)
 
-router.route('/')
-.get(tourController.getAllTours)
-.post(
-    authController.protect,
-     authController.restrictTo('admin', 'lead-guide'),
-    tourController.createTour)
 
-router.route('/:id')
-.get(tourController.getOneTour)
-.patch(
-    authController.protect, 
-    authController.restrictTo('admin', 'lead-guide'), 
-    tourController.updateTour)
-.delete(
-    authController.protect, 
-    authController.restrictTo('admin', 'lead-guide'), 
-    tourController.deleteTour)
+    router.route('/')
+    .get(tourController.getAllTours)
+    .post(
+        authController.protect,
+         authController.restrictTo('admin', 'lead-guide'),
+        tourController.createTour)
+    
+    router.route('/:id')
+    .get(tourController.getOneTour)
+    .patch(
+        authController.protect, 
+        authController.restrictTo('admin', 'lead-guide'), 
+        tourController.updateTour)
+    .delete(
+        authController.protect, 
+        authController.restrictTo('admin', 'lead-guide'), 
+        tourController.deleteTour)
 
+
+router.post('/searchTour', tourController.searchTour)
 module.exports = router

@@ -552,7 +552,7 @@ body {
 }
 
 .marker {
-  background-image: url('./assets/img/pin.png');
+  /* background-image: url('../img/pin.png'); */
   background-size: cover;
   width: 32px;
   height: 40px;
@@ -1071,7 +1071,7 @@ body {
 }
 
 .card-container {
-  max-width: 140rem;
+  max-width: 120rem;
   margin: 0 auto;
   display: grid;
   grid-template-columns: repeat(3, 1fr);

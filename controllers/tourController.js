@@ -60,31 +60,72 @@ const AppError = require('../utils/appError')
 
 exports.updateTour = catchAsync(async (req, res, next) => {
     toUpdate = mapTours({}, req.body)
-    // console.log(toUpdate)
-       let tour = Tour.findByIdAndUpdate(req.params.id, toUpdate, {
-           runValidators: true,
-           new: true
-       })
-       .then (async doc => {
-           if(toUpdate.startDate) {
-               await Tour.findByIdAndUpdate(req.params.id, { $push: { startDates: toUpdate.startDate }})
-                // await Tour.findByIdAndUpdate(req.params.id, { $push: { locations: { address: toUpdate.Location }}})
-                
-           }
-        res.status(200).json({
-            status: 'success',
-            doc
+    console.log('to updateee', toUpdate)
+    let tour = Tour.findByIdAndUpdate(req.params.id, toUpdate, {
+        runValidators: true,
+        new: true
+    })
+        .then(async doc => {
+               if(toUpdate.startDate) await Tour.findByIdAndUpdate(req.params.id, { $push: { startDates: toUpdate.startDate } })
+                 if(toUpdate.locations) await Tour.findByIdAndUpdate(req.params.id, {
+                    $push: {
+                        locations: { address: toUpdate.Location }
+                    }
+                })
+            res.status(200).json({
+                status: 'success',
+                doc
+            })
         })
-       })
-       .catch(err => next(err))
+        .catch(err => next(err))
     if (!tour) {
         return next(new AppError('no tour found with that ID.', 404))
     }
-   
+
+})
+
+exports.searchTour = catchAsync(async (req, res, next) => {
+    let toSearch = mapTours({}, req.body)
+    let condition = {}
+    console.log('searched>>', toSearch)
+    //price search
+    if (toSearch.minPrice) {
+        condition.price = { $gte: toSearch.minPrice }
+    }
+    if (toSearch.maxPrice) {
+        condition.price = { $lte: toSearch.maxPrice }
+    }
+    if (toSearch.maxPrice && toSearch.minPrice) {
+        condition.price = { $lte: toSearch.maxPrice, $gte: toSearch.minPrice }
+    }
+    // group size search
+    switch (toSearch.maxGroupSize) {
+        case '0-10': condition.maxGroupSize = { $gt: 0, $lt: 10 }
+            break
+        case '10-20': condition.maxGroupSize = { $gt: 10, $lt: 20 }
+            break
+        case '20 +': condition.maxGroupSize = { $gt: 20 }
+    }
+  if(toSearch.summary) {
+      condition.summary = toSearch.summary
+  }
+  if(toSearch.name) {
+    condition.name = toSearch.name
+}
+  if(toSearch.startLocation) {
+      condition.startLocation = toSearch.startLocation
+  }
+ if(toSearch.difficulty) {
+     condition.difficulty = toSearch.difficulty
+ }
+ console.log('condition', condition)
+ let tours = await Tour.find(condition)
+    res.status(200).json({
+        status: 'success', results: tours.length, tours
+    })
 })
 
 exports.getOneTour = handlerFactory.getOne(Tour, 'reviews')
 exports.createTour = handlerFactory.createOne(Tour)
-// exports.updateTour = handlerFactory.updateOne(Tour)
 exports.deleteTour = handlerFactory.deleteOne(Tour)
 
