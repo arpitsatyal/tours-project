@@ -32,7 +32,9 @@ let filterObj = (obj, ...allowedFields) => {
  }
  
 exports.updateMe = catchAsync(async(req, res, next) => {
+    console.log('req files',req.file)
     let filteredBody = filterObj(req.body, 'name', 'email')
+    if(req.file) filteredBody.photo = req.file.filename
     let updatedUser = await User.findByIdAndUpdate(req.user._id, filteredBody, {
         new: true, runValidators: true
     })

@@ -32,7 +32,6 @@ export class HeaderComponent implements OnInit {
     }
       if(name.toLowerCase() === ev.target.value) {
         this.matchedTour.push(tour)
-        console.log('matched')
         this.sendToGet.emit(this.matchedTour)
       } else if(ev.key === 'Backspace') {
         this.matchedTour = []

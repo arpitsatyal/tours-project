@@ -21,7 +21,10 @@ let userSchema = new mongoose.Schema({
         enum: ['admin', 'user', 'guide', 'lead-guide'],
         default: 'user'
     },
-    photo: String,
+    photo: {
+        type: String,
+        default: 'default.jpeg'
+    },
     password: {
         type: String,
         required: [true, 'please insert a password'],
