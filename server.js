@@ -17,6 +17,7 @@ mongoose.connect(DB, {
     useUnifiedTopology: true
 })
     .then(() => console.log('db connected!'))
+    .catch(err => console.log(err))
 
 let app = require('./app')
 let port = process.env.PORT || 3000

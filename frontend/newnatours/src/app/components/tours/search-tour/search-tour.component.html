@@ -15,7 +15,7 @@
     <br> 
 
     <label for="startLocation">Start Location</label> <br>
-    <select name="startLocation" [(ngModel)]="tour.startLocation" (change)="onstartLocationSelected(tour.startLocation)">
+    <select name="startLocation" [(ngModel)]="tour.startLocation.description" (change)="onstartLocationSelected(tour.startLocation.description)">
       <option value="">select start location</option>
       <option *ngFor="let location of startLocations">{{location}}</option>
     </select>

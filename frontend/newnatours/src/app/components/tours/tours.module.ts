@@ -23,6 +23,6 @@ import { SearchTourComponent } from './search-tour/search-tour.component';
     HttpClientModule,
     FormsModule
   ]
-  
 })
+
 export class ToursModule { }

@@ -47,7 +47,6 @@ exports.getAllTours = catchAsync(async (req, res, next) => {
     }
     // // execute query 
     let tours = await query
-
     res.status(200).json({
         status: 'success',
         results: tours.length,
@@ -81,13 +80,12 @@ exports.updateTour = catchAsync(async (req, res, next) => {
     if (!tour) {
         return next(new AppError('no tour found with that ID.', 404))
     }
-
 })
 
 exports.searchTour = catchAsync(async (req, res, next) => {
     let toSearch = mapTours({}, req.body)
     let condition = {}
-    console.log('searched>>', toSearch)
+    // console.log('searched>>', toSearch)
     //price search
     if (toSearch.minPrice) {
         condition.price = { $gte: toSearch.minPrice }
@@ -106,9 +104,6 @@ exports.searchTour = catchAsync(async (req, res, next) => {
             break
         case '20 +': condition.maxGroupSize = { $gt: 20 }
     }
-  if(toSearch.summary) {
-      condition.summary = toSearch.summary
-  }
   if(toSearch.name) {
     condition.name = toSearch.name
 }

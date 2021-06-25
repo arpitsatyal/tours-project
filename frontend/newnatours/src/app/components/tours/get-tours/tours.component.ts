@@ -7,8 +7,10 @@ import { TourService } from 'src/app/services/tours.service';
   templateUrl: './tours.component.html',
   styleUrls: ['./tours.component.css']
 })
+
 export class ToursComponent implements OnInit {
-  allTours = []
+  public allTours = []
+  matchedTour = []
   user = JSON.parse(localStorage.getItem('user'))
   @Input() inputData: any
   @Output() searchagain = new EventEmitter()
@@ -19,25 +21,27 @@ export class ToursComponent implements OnInit {
 
   ngOnInit(): void {
     this.toursService.getAllTours()
-    .subscribe((res: any) => {
-      if(this.inputData) {
-        this.allTours = this.inputData
-      } else {
-      this.allTours = res.data.tours
-      }
-    }, err => this.notify.showError(err))
-   
+      .subscribe((res: any) => {
+        if (this.inputData) {
+          this.allTours = this.inputData
+        } else {
+            this.allTours = res.data.tours
+        }
+      }, err => this.notify.showError(err))
   }
 
   deleteTour(id: string, index) {
     this.toursService.deleteTour(id)
-    .subscribe(() => {
-      this.allTours.splice(index, 1)
-      this.notify.showSuccess('tour deleted!')
-    }, err => console.log(err))
+      .subscribe(() => {
+        this.allTours.splice(index, 1)
+        this.notify.showSuccess('tour deleted!')
+      }, err => console.log(err))
   }
 
   searchAgain() {
     this.searchagain.emit()
+  }
+  getMatchedTour(ev) {
+    this.matchedTour = ev
   }
 }

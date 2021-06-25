@@ -34,7 +34,9 @@ module.exports = (obj1, obj2) => {
     }
     if(obj2.startLocation) {
         if(obj2.startLocation.description) {
-            obj1.startLocation = obj2.startLocation
+            obj1.startLocation = {
+                description: obj2.startLocation.description
+            }
         }
     }
     if(obj2.locations) {
