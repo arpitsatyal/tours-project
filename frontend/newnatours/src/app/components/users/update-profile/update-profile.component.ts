@@ -14,7 +14,7 @@ toUpdate
 selectedFile
 submitting
 imagePath 
-user = JSON.parse(localStorage.getItem('user'))
+userPhoto = JSON.parse(localStorage.getItem('user')).photo
   constructor(
     private userService: UsersService,
     private notify: notifyService
@@ -33,6 +33,7 @@ user = JSON.parse(localStorage.getItem('user'))
     this.userService.updateMe(this.toUpdate, this.selectedFile)
     .subscribe((res: any) => {
       localStorage.setItem('user', JSON.stringify(res.updatedUser))
+      this.userPhoto = res.updatedUser.photo
       this.notify.showSuccess('profile updated!')
       this.submitting = false
     }, err => {

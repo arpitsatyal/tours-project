@@ -2,6 +2,7 @@ import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { Router } from '@angular/router';
 import { notifyService } from 'src/app/services/notify.service';
 import { TourService } from 'src/app/services/tours.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-header',
@@ -12,12 +13,14 @@ export class HeaderComponent implements OnInit {
   user = JSON.parse(localStorage.getItem('user'))
   allTours = []
   matchedTour = []
+  imagePath = environment.imageUrl + 'img/' + 'users'
   @Output() sendToGet = new EventEmitter()
   constructor(
     private router: Router,
     private toursService: TourService,
     private notify: notifyService
-  ) { }
+  ) {
+   }
 
   ngOnInit(): void {
     this.toursService.getAllTours()

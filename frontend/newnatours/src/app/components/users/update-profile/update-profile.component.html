@@ -10,7 +10,7 @@
         <input class="form__input" name="email" type="email" [(ngModel)]="toUpdate.email">
     </div>
     <div class="form__group form__photo-upload">
-        <img class="form__user-photo" src="{{imagePath}}/{{user.photo}}" alt="User photo" />
+        <img class="form__user-photo" src="{{imagePath}}/{{userPhoto}}" name="userPhoto" [(ngModel)]="userPhoto" alt="User photo" />
         <input type="file" (change)="onFileSelected($event)">
     </div>
     <div class="form__group center">
