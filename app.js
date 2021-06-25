@@ -22,10 +22,13 @@ let limiter = rateLimit({
     max: 100, windowMs: 50 * 60 * 1000,
     message: 'too many requests from this IP. try again later..'
 })
+// serving static files
+app.use('/public', express.static(`${__dirname}/public`))
+
 app.use(cors())
 app.use('/api', limiter)
 app.use(express.json({ limit: '200mb' }))
-app.use(express.urlencoded({ extended: false }))
+app.use(express.urlencoded({ extended: true }))
 
 // data sanitization vs NOSQL query injection
 app.use(mongoSanitize())
@@ -36,8 +39,6 @@ app.use(hpp({
     whitelist: ['duration', 'ratingsAverage', 'ratingsQuantity', 
 'difficulty', 'price', 'maxGroupSize']
 }))
-// serving static files
-app.use(express.static(`${__dirname}/public`))
 
 app.use('/api/v1/users', userRoutes)
 app.use('/api/v1/tours', tourRoutes)

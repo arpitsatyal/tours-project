@@ -14,6 +14,9 @@ let routes: Routes = [
        path: 'auth', loadChildren: './components/auth/auth.module#AuthModule'
    },
    {
+       path: 'users', loadChildren: './components/users/users.module#UsersModule'
+   },
+   {
     path: '**', component: PageNotFoundComponent
    }
 ]

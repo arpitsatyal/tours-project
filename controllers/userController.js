@@ -1,6 +1,7 @@
 let User = require('../models/userModel')
 let catchAsync = require('../utils/catchAsync')
 let handlerFactory = require('./handlerFactory')
+let mapUser = require('../utils/mapUser')
 
 exports.getAllUsers = catchAsync(async(req,res,next) => {
     let users = await User.find()
@@ -22,20 +23,12 @@ exports.deleteUser = handlerFactory.deleteOne(User)
 
 exports.getMe = handlerFactory.getOne(User)
 
-let filterObj = (obj, ...allowedFields) => {
-    let toSend = {}
-   let reqBodyFields = Object.keys(obj)
-   reqBodyFields.forEach(el => {
-       if(allowedFields.includes(el)) toSend[el] = obj[el]
-   })
-    return toSend
- }
- 
 exports.updateMe = catchAsync(async(req, res, next) => {
     console.log('req files',req.file)
-    let filteredBody = filterObj(req.body, 'name', 'email')
-    if(req.file) filteredBody.photo = req.file.filename
-    let updatedUser = await User.findByIdAndUpdate(req.user._id, filteredBody, {
+    let toUpdate = mapUser({}, req.body)
+    if(req.file) toUpdate.photo = req.file.filename
+    console.log(toUpdate)
+    let updatedUser = await User.findByIdAndUpdate(req.user._id, toUpdate, {
         new: true, runValidators: true
     })
     res.status(200).json({

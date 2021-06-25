@@ -16,7 +16,8 @@ import { SearchTourComponent } from './search-tour/search-tour.component';
 
 @NgModule({
   declarations: [ToursComponent, WelcomeComponent,
-     HeaderComponent, FooterComponent, EditToursComponent, CreateToursComponent, GetOneTourComponent, ReviewsComponent, CreateReviewComponent, SearchTourComponent],
+     HeaderComponent, FooterComponent, EditToursComponent, CreateToursComponent,
+      GetOneTourComponent, ReviewsComponent, CreateReviewComponent, SearchTourComponent],
   imports: [
     CommonModule,
     ToursRoutingModule,

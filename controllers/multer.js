@@ -3,9 +3,10 @@ let AppError = require('../utils/appError')
 
 let multerStorage = multer.diskStorage({
     destination: (req, file, cb) => {
-        cb(null,'public/img/users')
+        cb(null,'./public/img/users')
     },
     filename: (req, file, cb) => {
+        console.log('file multer', file)
         let ext = file.mimetype.split('/')[1]
         cb(null, `user-${req.user._id}-${Date.now()}.${ext}`)
     }

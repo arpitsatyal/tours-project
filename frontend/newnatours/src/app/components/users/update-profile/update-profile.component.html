@@ -1,0 +1,25 @@
+<h2 class="heading-secondary ma-bt-md">Your account settings</h2>
+<form class="form form-user-data">
+
+    <div class="form__group">
+        <label class="form__label" for="name">Name</label>
+        <input class="form__input" name="name" type="text" [(ngModel)]="toUpdate.name">
+    </div>
+    <div class="form__group ma-bt-md">
+        <label class="form__label" for="email">Email address</label>
+        <input class="form__input" name="email" type="email" [(ngModel)]="toUpdate.email">
+    </div>
+    <div class="form__group form__photo-upload">
+        <img class="form__user-photo" src="{{imagePath}}/{{user.photo}}" alt="User photo" />
+        <input type="file" (change)="onFileSelected($event)">
+    </div>
+    <div class="form__group center">
+        <button class="btn btn--small btn--green" (click)="updateMe()" *ngIf="!submitting">Update Profile</button>
+        <button class="btn btn--small btn--green" *ngIf="submitting">Updating...</button>
+    </div>
+</form>
+<br> <br>
+<!-- <button class="btn btn--small btn--red" (click)="deleteMe(user._id)">delete your account </button> -->
+<br> <br> 
+<!-- <a routerLink="/users/me/{{user._id}}" class="btn btn-info">go back</a> -->
+

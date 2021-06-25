@@ -7,6 +7,7 @@ import { ToursModule } from './components/tours/tours.module';
 import { ToastrModule } from 'ngx-toastr';
 import { ServicesModule } from './services/service.module';
 import { AuthModule } from './components/auth/auth.module';
+import { UsersModule } from './components/users/users.module';
 
 @NgModule({
   declarations: [
@@ -18,6 +19,7 @@ import { AuthModule } from './components/auth/auth.module';
     AppRoutingModule,
     ToursModule,
     AuthModule,
+    UsersModule,
     ToastrModule.forRoot(),
     ServicesModule
   ],
