@@ -2,6 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { notifyService } from 'src/app/services/notify.service';
 import { ReviewService } from 'src/app/services/review.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-reviews',
@@ -13,6 +14,7 @@ tourId
 reviews
 rating = [1,2,3,4,5]
 user 
+imagePath = environment.imageUrl + 'img/users/'
   constructor(
     private activatedRoute: ActivatedRoute,
     private reviewService: ReviewService,

@@ -2,7 +2,7 @@ let express = require('express')
 let router = express.Router()
 let usersController = require('../controllers/userController')
 let authController = require('../controllers/authController')
-let multerController = require('../controllers/multer')
+let { resizeUserPhoto, uploadUserPhoto } = require('../controllers/multerController')
 
 // these dont need to be protected
 router.post('/signup', authController.signup)
@@ -14,7 +14,7 @@ router.use(authController.protect)
 
 router.patch('/updatePassword', authController.updatePassword)
 router.get('/getMe', usersController.setUserId, usersController.getMe)
-router.patch('/updateMe', multerController.uploadUserPhoto, usersController.resizeUserPhoto, usersController.updateMe)
+router.patch('/updateMe', uploadUserPhoto, resizeUserPhoto, usersController.updateMe)
 router.delete('/deleteMe', usersController.deleteMe)
 
 router.use(authController.restrictTo('admin'))

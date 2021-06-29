@@ -19,6 +19,6 @@ export class UsersService extends BaseService {
         } else {
             toSend = data
         }
-        return this.http.patch(this.url + 'updateMe', toSend, this.getToken())
+        return this.http.patch(this.url + 'updateMe', toSend, this.setToken())
     }
 }

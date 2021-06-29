@@ -35,7 +35,12 @@
      <label for="startDate">startDate</label>
     <input class="form-control" type="Date" placeholder="startDate" name="startDate" [(ngModel)]="tour.startDate"> 
     <br>
-    <button class="btn btn-primary" (click)="editTour(tour, tourId)" *ngIf="!submitting">Submit</button>
+
+    <div class="form__group form__photo-upload">
+        <input type="file" (change)="onFileSelected($event)">
+    </div>
+    
+    <button class="btn btn-primary" (click)="editTour(tour)" *ngIf="!submitting">Submit</button>
     <button class="btn btn-primary" *ngIf="submitting">Submitting...</button>
 
 </form>

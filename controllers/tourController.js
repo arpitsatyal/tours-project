@@ -1,6 +1,7 @@
 let Tour = require('../models/tourModel')
 let catchAsync = require('../utils/catchAsync')
 let handlerFactory = require('./handlerFactory')
+let { deleteFile } = require('./multerController')
 
 exports.aliasTopTours = async (req, res, next) => {
     req.query.limit = '5'
@@ -59,18 +60,28 @@ const AppError = require('../utils/appError')
 
 exports.updateTour = catchAsync(async (req, res, next) => {
     toUpdate = mapTours({}, req.body)
-    console.log('to updateee', toUpdate)
+    // console.log(req.files)
+    // console.log('to updateee', toUpdate)
+    let currentTour = await Tour.findById(req.params.id)
+
+    if (req.files.imageCover) {
+        deleteFile('tours', currentTour.imageCover)
+    } 
+    if (req.files.images) {
+        currentTour.images.forEach(image => deleteFile('tours', image))
+    }
+
     let tour = Tour.findByIdAndUpdate(req.params.id, toUpdate, {
         runValidators: true,
         new: true
     })
         .then(async doc => {
-               if(toUpdate.startDate) await Tour.findByIdAndUpdate(req.params.id, { $push: { startDates: toUpdate.startDate } })
-                 if(toUpdate.locations) await Tour.findByIdAndUpdate(req.params.id, {
-                    $push: {
-                        locations: { address: toUpdate.Location }
-                    }
-                })
+            if (toUpdate.startDate) await Tour.findByIdAndUpdate(req.params.id, { $push: { startDates: toUpdate.startDate } })
+            if (toUpdate.locations) await Tour.findByIdAndUpdate(req.params.id, {
+                $push: {
+                    locations: { address: toUpdate.Location }
+                }
+            })
             res.status(200).json({
                 status: 'success',
                 doc
@@ -104,17 +115,17 @@ exports.searchTour = catchAsync(async (req, res, next) => {
             break
         case '20 +': condition.maxGroupSize = { $gt: 20 }
     }
-  if(toSearch.name) {
-    condition.name = toSearch.name
-}
-  if(toSearch.startLocation) {
-      condition.startLocation = toSearch.startLocation
-  }
- if(toSearch.difficulty) {
-     condition.difficulty = toSearch.difficulty
- }
- console.log('condition', condition)
- let tours = await Tour.find(condition)
+    if (toSearch.name) {
+        condition.name = toSearch.name
+    }
+    if (toSearch.startLocation) {
+        condition.startLocation = toSearch.startLocation
+    }
+    if (toSearch.difficulty) {
+        condition.difficulty = toSearch.difficulty
+    }
+    console.log('condition', condition)
+    let tours = await Tour.find(condition)
     res.status(200).json({
         status: 'success', results: tours.length, tours
     })

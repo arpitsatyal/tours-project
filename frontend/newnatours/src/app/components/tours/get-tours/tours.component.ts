@@ -1,6 +1,7 @@
 import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 import { notifyService } from 'src/app/services/notify.service';
 import { TourService } from 'src/app/services/tours.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-get-tours',
@@ -11,6 +12,7 @@ import { TourService } from 'src/app/services/tours.service';
 export class ToursComponent implements OnInit {
   public allTours = []
   matchedTour = []
+  imagePath = environment.imageUrl + 'img/tours/'
   user = JSON.parse(localStorage.getItem('user'))
   @Input() inputData: any
   @Output() searchagain = new EventEmitter()

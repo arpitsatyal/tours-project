@@ -13,6 +13,7 @@ export class EditToursComponent implements OnInit {
   tour 
   tourId 
   submitting
+  selectedFile
   constructor(
     public tourService: TourService,
     public notifyService: notifyService,
@@ -25,9 +26,12 @@ export class EditToursComponent implements OnInit {
     this.tour = new Tour({})
     this.tourId = this.activatedRoute.snapshot.params.tourId
   }
-  editTour(tour, tourId) {
+  onFileSelected(e) {
+    this.selectedFile = e.target.files[0]
+  }
+  editTour(tour) {
     this.submitting = true
-    this.tourService.editTour(tour, tourId)
+    this.tourService.editTour(tour, this.tourId, this.selectedFile)
     .subscribe(() => {
       this.notifyService.showSuccess('edited!')
       this.submitting = false

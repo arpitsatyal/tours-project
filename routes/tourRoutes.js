@@ -4,6 +4,7 @@ let tourController = require('../controllers/tourController')
 let tourStatsController = require('../controllers/tourStatsController')
 let authController = require('../controllers/authController')
 let reviewRouter = require('./reviewRoutes')
+let { uploadTourImages, resizeTourImages } = require('../controllers/multerController')
 
 router.use('/:tourId/reviews', reviewRouter)
 
@@ -27,12 +28,12 @@ router.route('/tour-monthly-plan/:year').get(
     .patch(
         authController.protect, 
         authController.restrictTo('admin', 'lead-guide'), 
+       uploadTourImages, resizeTourImages,
         tourController.updateTour)
     .delete(
         authController.protect, 
         authController.restrictTo('admin', 'lead-guide'), 
         tourController.deleteTour)
-
 
 router.post('/searchTour', tourController.searchTour)
 module.exports = router

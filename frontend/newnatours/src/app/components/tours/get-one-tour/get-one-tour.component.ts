@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { notifyService } from 'src/app/services/notify.service';
 import { TourService } from 'src/app/services/tours.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-get-one-tour',
@@ -11,6 +12,10 @@ import { TourService } from 'src/app/services/tours.service';
 export class GetOneTourComponent implements OnInit {
 tourId
 tour 
+images = []
+submitting 
+selectedFiles = []
+imagePath = environment.imageUrl + 'img/tours/'
   constructor(
     private tourService: TourService,
     private activatedRoute: ActivatedRoute,
@@ -22,7 +27,22 @@ tour
     this.tourService.getOneTour(this.tourId)
     .subscribe((res:any) => {
       this.tour = res.doc
-      console.log(this.tour)
+      this.images = res.doc.images
     }, err => this.notifyService.showError(err))
+  }
+  onFileSelected(e) {
+    this.selectedFiles = Array.from(e.target.files)
+  }
+  updateNewImages() {
+    this.submitting = true
+    this.tourService.editTour(this.tour, this.tourId, this.selectedFiles)
+    .subscribe((res: any) => {
+      this.submitting = false
+      this.images = res.doc.images
+      this.notifyService.showSuccess('tour images updated!')
+    }, err => {
+      this.submitting = false
+      this.notifyService.showError(err)
+    })
   }
 }

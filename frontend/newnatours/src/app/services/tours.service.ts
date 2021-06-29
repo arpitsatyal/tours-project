@@ -2,11 +2,13 @@ import { Injectable } from "@angular/core";
 import { HttpClient } from '@angular/common/http';
 import { Tour } from '../models/tourModel'
 import { BaseService } from "./base.service";
+import { UploadService } from "./upload.service";
 
 @Injectable()
 export class TourService extends BaseService {
     constructor(
-        public http: HttpClient
+        public http: HttpClient,
+        public uploadService: UploadService
     ) {
         super('tours')
     }
@@ -19,8 +21,17 @@ export class TourService extends BaseService {
     createTour(tour: Tour) {
         return this.http.post(this.url, tour, this.setHeadersWithToken())
     }
-    editTour(tour: Tour, tourId) {
-        return this.http.patch(this.url + tourId, tour, this.setHeadersWithToken())
+    editTour(data: Tour, tourId, images) {
+        let toSend
+        if(images.length > 1) {
+            toSend = this.uploadService.uploadImage(data, images, 'images')
+        } else if(images) {
+            toSend = this.uploadService.uploadImage(data, images, 'imageCover')
+        } 
+        else {
+            toSend = data
+        }
+        return this.http.patch(this.url + tourId, toSend, this.setToken())
     }
     deleteTour(tourId) {
         return this.http.delete(this.url + tourId, this.setHeadersWithToken())

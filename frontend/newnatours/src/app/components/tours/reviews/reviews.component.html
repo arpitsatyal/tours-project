@@ -5,7 +5,7 @@
       <div class="reviews__card"  *ngFor="let review of reviews">
         <div class="reviews__avatar">
           <img
-            src="../../../assets/img/users/{{review.user.photo}}"
+            src="{{imagePath}}/{{review.user.photo}}"
             alt="Jim Brown"
             class="reviews__avatar-img"
           />

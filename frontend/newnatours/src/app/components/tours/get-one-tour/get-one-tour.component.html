@@ -1,29 +1,4 @@
 <app-header></app-header>
-<!-- <section class="section-header">
-  <div class="heading-box">
-    <h1 class="heading-primary">
-      <span
-        >{{tour.name.split(' ')[0] + ' ' + tour.name.split(' ')[1]}} <br />
-        {{tour.name.split(' ')[2] + ' ' + 'Tour'}}</span
-      >
-    </h1>
-    <div class="heading-box__group">
-      <div class="heading-box__detail">
-        <svg class="heading-box__icon">
-          <use xlink:href="../../../assetsimg/icons.svg#icon-clock"></use>
-        </svg>
-        <span class="heading-box__text">{{tour.duration}}</span>
-      </div>
-      <div class="heading-box__detail">
-        <svg class="heading-box__icon">
-          <use xlink:href="../../../assetsimg/icons.svg#icon-map-pin"></use>
-        </svg>
-        <span class="heading-box__text">{{tour.startLocation}}</span>
-      </div>
-    </div>
-  </div>
-</section> -->
-
   <section class="section-description">
     <div class="overview-box">
       <div>
@@ -93,26 +68,22 @@
     </div>
   </section>
 
-  <section class="section-pictures">
+  <div class="form__group form__photo-upload">
+    <input type="file" (change)="onFileSelected($event)" multiple>
+</div>
+
+<div class="form__group center">
+  <button class="btn btn--small btn--green" (click)="updateNewImages()" *ngIf="!submitting">Update Tour Images</button>
+  <button class="btn btn--small btn--green" *ngIf="submitting">Updating...</button>
+</div>
+
+  <section class="section-pictures" *ngFor="let i of images">
     <div class="picture-box">
       <img
         class="picture-box__img picture-box__img--1"
-        src="../../../assets/img/tours/tour-5-1.jpg"
-        alt="The Park Camper Tour 1"
-      />
-    </div>
-    <div class="picture-box">
-      <img
-        class="picture-box__img picture-box__img--2"
-        src="../../../assets/img/tours/tour-5-2.jpg"
-        alt="The Park Camper Tour 1"
-      />
-    </div>
-    <div class="picture-box">
-      <img
-        class="picture-box__img picture-box__img--3"
-        src="../../../assets/img/tours/tour-5-3.jpg"
-        alt="The Park Camper Tour 1"
+        src="{{imagePath}}/{{i}}"
+        alt="{{tour.name}}"
+        width="500" height="500"
       />
     </div>
   </section>
