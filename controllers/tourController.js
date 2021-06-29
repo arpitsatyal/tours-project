@@ -61,26 +61,26 @@ const AppError = require('../utils/appError')
 exports.updateTour = catchAsync(async (req, res, next) => {
     toUpdate = mapTours({}, req.body)
     // console.log(req.files)
-    // console.log('to updateee', toUpdate)
+    console.log('to updateee', toUpdate)
     let currentTour = await Tour.findById(req.params.id)
-
-    if (req.files.imageCover) {
-        deleteFile('tours', currentTour.imageCover)
-    } 
-    if (req.files.images) {
-        currentTour.images.forEach(image => deleteFile('tours', image))
+    if(req.files) {
+        if (req.files.imageCover) {
+            deleteFile('tours', currentTour.imageCover)
+        } 
+        if (req.files.images) {
+            currentTour.images.forEach(image => deleteFile('tours', image))
+        }
     }
-
     let tour = Tour.findByIdAndUpdate(req.params.id, toUpdate, {
         runValidators: true,
         new: true
     })
         .then(async doc => {
-            if (toUpdate.startDate) await Tour.findByIdAndUpdate(req.params.id, { $push: { startDates: toUpdate.startDate } })
+            if (toUpdate.startDate) await Tour.findByIdAndUpdate(req.params.id, { $push: { startDates: toUpdate.startDate } }) //being pushed properly.
             if (toUpdate.locations) await Tour.findByIdAndUpdate(req.params.id, {
                 $push: {
                     locations: { address: toUpdate.Location }
-                }
+                } //not being pushed properly to the array, instead it is being overrwritten. why? note: it is a GEOJSON field.
             })
             res.status(200).json({
                 status: 'success',

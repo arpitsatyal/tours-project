@@ -26,11 +26,8 @@
     <label for="summary">summary</label>
     <input class="form-control" type="text" placeholder="summary" name="summary" [(ngModel)]="tour.summary">
 
-    <label for="startLocation">tart Location</label>
+    <label for="startLocation">Start Location</label>
     <input class="form-control" type="text" placeholder="Start Location" name="startLocation" [(ngModel)]="tour.startLocation.description">
-
-    <label for="startDate">startDate</label>
-    <input class="form-control" type="Date" placeholder="startDate" name="startDate" [(ngModel)]="tour.startDate">
     <br>
     <button class="btn btn-primary" (click)="createTour(tour)" *ngIf="!submitting">Submit</button>
     <button class="btn btn-primary" *ngIf="submitting">Submitting...</button>

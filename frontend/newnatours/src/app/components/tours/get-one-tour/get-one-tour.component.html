@@ -39,7 +39,7 @@
           <div *ngFor="let guide of tour.guides">
           <div class="overview-box__detail" *ngIf="guide.role === 'lead-guide'">
             <img
-              src="../../../assets/img/users/{{guide.photo}}"
+              src="{{imageUserPath}}/{{guide.photo}}"
               alt="Lead guide"
               class="overview-box__img"
             />
@@ -48,7 +48,7 @@
           </div>
           <div class="overview-box__detail" *ngIf="guide.role === 'guide'">
             <img
-              src="../../../assets/img/users/{{guide.photo}}"
+              src="{{imageUserPath}}/{{guide.photo}}"
               alt="Tour guide"
               class="overview-box__img"
             />
@@ -68,30 +68,40 @@
     </div>
   </section>
 
-  <div class="form__group form__photo-upload">
-    <input type="file" (change)="onFileSelected($event)" multiple>
-</div>
+  <form *ngIf="!images.length && user.role === 'admin'">
+    <label for="files">Select files:</label>
+    <input type="file" (change)="onFilesSelected($event)" multiple ><br><br>
+    <button class="btn btn-primary" (click)="uploadMultiple()" [hidden]="submitting">Upload Files</button>
+    <button class="btn btn-info"  [hidden]="!submitting">uploading...</button>
+  </form>
+  
+  <div *ngIf="images.length && user.role === 'admin'">
+    <input type="file" (change)="onFilesSelected($event)" multiple ><br><br>
+    <button class="btn btn-small" (click)="uploadMultiple()" *ngIf="!submitting">Update Tour Images</button>
+    <button class="btn btn-info"  *ngIf="submitting">updating...</button>
+  </div>
 
-<div class="form__group center">
-  <button class="btn btn--small btn--green" (click)="updateNewImages()" *ngIf="!submitting">Update Tour Images</button>
-  <button class="btn btn--small btn--green" *ngIf="submitting">Updating...</button>
-</div>
-
-  <section class="section-pictures" *ngFor="let i of images">
-    <div class="picture-box">
+  <section class="section-pictures" *ngIf="images.length">
+    <div class="picture-box" *ngFor="let i of images">
       <img
         class="picture-box__img picture-box__img--1"
         src="{{imagePath}}/{{i}}"
         alt="{{tour.name}}"
-        width="500" height="500"
       />
     </div>
+    <div class="picture-box" >
+      <img 
+        class="picture-box__img picture-box__img--1"
+        src="{{imagePath}}/{{tour.imageCover}}"
+        alt="a" 
+      >
+    </div> 
   </section>
 
   <!-- <section class="section-map">
     <div id="map"></div>
-  </section> -->
-  
+  </section>
+   -->
 <app-reviews></app-reviews>
 
   <section class="section-cta">

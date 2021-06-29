@@ -23,13 +23,13 @@ export class TourService extends BaseService {
     }
     editTour(data: Tour, tourId, images) {
         let toSend
-        if(images.length > 1) {
+        if(!images) {
+            toSend = data
+        } else if(images.length) {
             toSend = this.uploadService.uploadImage(data, images, 'images')
-        } else if(images) {
-            toSend = this.uploadService.uploadImage(data, images, 'imageCover')
         } 
         else {
-            toSend = data
+            toSend = this.uploadService.uploadImage(data, images, 'imageCover')
         }
         return this.http.patch(this.url + tourId, toSend, this.setToken())
     }

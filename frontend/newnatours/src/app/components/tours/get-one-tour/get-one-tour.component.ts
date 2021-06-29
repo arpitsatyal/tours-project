@@ -15,7 +15,9 @@ tour
 images = []
 submitting 
 selectedFiles = []
+user = JSON.parse(localStorage.getItem('user'))
 imagePath = environment.imageUrl + 'img/tours/'
+imageUserPath = environment.imageUrl + 'img/users/'
   constructor(
     private tourService: TourService,
     private activatedRoute: ActivatedRoute,
@@ -30,10 +32,10 @@ imagePath = environment.imageUrl + 'img/tours/'
       this.images = res.doc.images
     }, err => this.notifyService.showError(err))
   }
-  onFileSelected(e) {
+  onFilesSelected(e) {
     this.selectedFiles = Array.from(e.target.files)
   }
-  updateNewImages() {
+  uploadMultiple() {
     this.submitting = true
     this.tourService.editTour(this.tour, this.tourId, this.selectedFiles)
     .subscribe((res: any) => {
