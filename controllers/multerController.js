@@ -23,15 +23,19 @@ let upload = multer({
 //for user's profile pic
 uploadUserPhoto = upload.single('photo')
 
-//resizing the photo
-resizeUserPhoto = async (req, res, next) => {
-    if (!req.file) return next()
-    req.file.filename = `user-${req.user._id}-${Date.now()}.jpeg`
-    await sharp(req.file.buffer)
+//resizing the photos
+async function resize(file, filename, path) {
+      return await sharp(file)
         .resize(500, 500)
         .toFormat('jpeg')
         .jpeg({ quality: 90 })
-        .toFile(`public/img/users/${req.file.filename}`)
+        .toFile(`public/img/${path}/${filename}`)
+}
+
+resizeUserPhoto = async (req, res, next) => {
+    if (!req.file) return next()
+    req.file.filename = `user-${req.user._id}-${Date.now()}.jpeg`
+    await resize(req.file.buffer, req.file.filename, 'users')
     next()
 }
 
@@ -48,22 +52,15 @@ uploadTourImages = upload.fields([
 resizeTourImages = async (req, res, next) => {
     if (!req.files) return next()
     if(req.files.imageCover) {
-        req.body.imageCover = `tour-${req.params.id}-${Date.now()}-cover.jpeg`
-        await sharp(req.files.imageCover[0].buffer)
-            .resize(500, 500)
-            .toFormat('jpeg')
-            .jpeg({ quality: 90 })
-            .toFile(`public/img/tours/${req.body.imageCover}`)
+        let filename = `tour-${req.params.id}-${Date.now()}-cover.jpeg`
+        req.body.imageCover = filename
+        await resize(req.files.imageCover[0].buffer, filename, 'tours')
     }
     if (req.files.images) {
         req.body.images = []
         await Promise.all(req.files.images.map(async (file, i) => {
             let filename = `tour-${req.params.id}-${Date.now()}-${i + 1}.jpeg`
-            await sharp(file.buffer)
-                .resize(500, 500)
-                .toFormat('jpeg')
-                .jpeg({ quality: 90 })
-                .toFile(`public/img/tours/${filename}`)
+            await resize(file.buffer, filename, 'tours')
                 req.body.images.push(filename)
         }))
     }

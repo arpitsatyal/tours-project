@@ -14,6 +14,7 @@ toUpdate
 selectedFile
 submitting
 imagePath 
+photo
 userPhoto = JSON.parse(localStorage.getItem('user')).photo
   constructor(
     private userService: UsersService,
