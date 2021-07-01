@@ -27,7 +27,7 @@ exports.updateMe = catchAsync(async(req, res, next) => {
     // console.log('req files',req.file) 
     let toUpdate = mapUser({}, req.body)
     if(req.file) toUpdate.photo = req.file.filename
-    console.log(toUpdate)
+    // console.log(toUpdate)
     let currentUser = await User.findById(req.user._id)
     if(req.file) {
         if(currentUser.photo !== 'default.jpg') deleteFile('users', currentUser.photo)

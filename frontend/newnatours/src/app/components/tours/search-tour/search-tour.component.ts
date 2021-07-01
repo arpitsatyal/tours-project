@@ -50,7 +50,6 @@ names = []
   }
   resetSearch() {
     this.results.length = 0
-    this.tour.name = ''
-    this.tour.summary = ''
+    this.tour = new Tour({})
   }
 }

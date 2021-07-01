@@ -1,5 +1,5 @@
 <app-header (sendToGet)="getMatchedTour($event)"></app-header>
-<a routerLink="/searchTour" class="btn btn-primary btn-sm" *ngIf="inputData" (click)="searchAgain()">search again</a>
+<a routerLink="/tours/searchTour" class="btn btn-primary btn-sm" *ngIf="inputData" (click)="searchAgain()">search again</a>
 <div *ngIf="!matchedTour.length">
 <main class="main">
   <div class="card-container">

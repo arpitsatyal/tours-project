@@ -58,11 +58,13 @@ resizeTourImages = async (req, res, next) => {
     }
     if (req.files.images) {
         req.body.images = []
-        await Promise.all(req.files.images.map(async (file, i) => {
+        await Promise.all(
+            req.files.images.map(async (file, i) => {
             let filename = `tour-${req.params.id}-${Date.now()}-${i + 1}.jpeg`
             await resize(file.buffer, filename, 'tours')
                 req.body.images.push(filename)
-        }))
+        })
+        )
     }
     next()
 }

@@ -32,18 +32,18 @@ module.exports = (obj1, obj2) => {
     if(obj2.startDate) {
         obj1.startDate = obj2.startDate
     }
-    if(obj2.startLocation) {
-        if(obj2.startLocation.description) {
-            obj1.startLocation = {
-                description: obj2.startLocation.description
-            }
-        }
-    }
-    if(obj2.locations) {
-        if(obj2.locations.address) {
-            obj1.locations = obj2.locations
-        }
-    }
+    // if(obj2.startLocation) {
+    //     if(obj2.startLocation.description) {
+    //         obj1.startLocation = {
+    //             description: obj2.startLocation.description
+    //         }
+    //     }
+    // }
+    // if(obj2.locations) {
+    //     if(obj2.locations.address) {
+    //         obj1.locations = obj2.locations
+    //     }
+    // }
     if(obj2.ratingsAverage) {
         obj1.ratingsAverage = obj2.ratingsAverage
     }

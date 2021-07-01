@@ -30,7 +30,10 @@
     <input class="form-control" type="text" placeholder="Start Location" name="startLocation" [(ngModel)]="tour.startLocation.description">
 
     <label for="locations">Add Location</label>
-    <input class="form-control" type="text" placeholder="Location address" name="locations" [(ngModel)]="tour.locations.address"> 
+    <input class="form-control" type="text" placeholder="Location address" name="tour.locations.address" [(ngModel)]="tour.locations.address"> 
+    <label for="locations">coordinates</label>
+    <input class="form-control" type="number" placeholder="longitude" name="tour.locations.longitude" [(ngModel)]="tour.locations.longitude"> 
+    <input class="form-control" type="number" placeholder="latitude" name="tour.locations.latitude" [(ngModel)]="tour.locations.latitude"> 
     <br>
      <label for="startDate">startDate</label>
     <input class="form-control" type="Date" placeholder="startDate" name="startDate" [(ngModel)]="tour.startDate"> 

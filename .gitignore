@@ -1,3 +1,5 @@
 public/*
+public/img/users*
 node_modules/
 config.env
+gittoken.txt

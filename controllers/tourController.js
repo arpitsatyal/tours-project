@@ -61,12 +61,13 @@ const AppError = require('../utils/appError')
 exports.updateTour = catchAsync(async (req, res, next) => {
     toUpdate = mapTours({}, req.body)
     // console.log(req.files)
-    console.log('to updateee', toUpdate)
+    // console.log('to updateee', toUpdate)
+    console.log(req.body)
     let currentTour = await Tour.findById(req.params.id)
-    if(req.files) {
+    if (req.files) {
         if (req.files.imageCover) {
             deleteFile('tours', currentTour.imageCover)
-        } 
+        }
         if (req.files.images) {
             currentTour.images.forEach(image => deleteFile('tours', image))
         }
@@ -76,12 +77,28 @@ exports.updateTour = catchAsync(async (req, res, next) => {
         new: true
     })
         .then(async doc => {
-            if (toUpdate.startDate) await Tour.findByIdAndUpdate(req.params.id, { $push: { startDates: toUpdate.startDate } }) //being pushed properly.
-            if (toUpdate.locations) await Tour.findByIdAndUpdate(req.params.id, {
-                $push: {
-                    locations: { address: toUpdate.Location }
-                } //not being pushed properly to the array, instead it is being overrwritten. why? note: it is a GEOJSON field.
-            })
+            if (toUpdate.startDate) await Tour.findByIdAndUpdate(req.params.id, { $push: { startDates: toUpdate.startDate } })
+
+            if (req.body.locations) {
+                if (req.body.locations.address) {
+                    await Tour.findByIdAndUpdate(req.params.id, {
+                        $push: {
+                            locations: { address: req.body.locations.address }
+                        }
+                    })
+                            if (req.body.locations.longitude && req.body.locations.latitude) await Tour.updateOne({_id: req.params.id},
+                                {
+                                    $push: {
+                                        "locations.$[].coordinates": [req.body.locations.longitude, req.body.locations.latitude]
+                                    }
+                                })
+                        //how to remove from the coordinates from the another field of the array. ie not the one just updated?
+                }
+            }
+            if (req.body.startLocation) {
+                if (req.body.startLocation.description) await Tour.findByIdAndUpdate(req.params.id,
+                    { $set: { 'startLocation.description': req.body.startLocation.description } })
+            }
             res.status(200).json({
                 status: 'success',
                 doc
@@ -96,8 +113,8 @@ exports.updateTour = catchAsync(async (req, res, next) => {
 exports.searchTour = catchAsync(async (req, res, next) => {
     let toSearch = mapTours({}, req.body)
     let condition = {}
-    // console.log('searched>>', toSearch)
     //price search
+    // console.log(req.body)
     if (toSearch.minPrice) {
         condition.price = { $gte: toSearch.minPrice }
     }
@@ -118,8 +135,10 @@ exports.searchTour = catchAsync(async (req, res, next) => {
     if (toSearch.name) {
         condition.name = toSearch.name
     }
-    if (toSearch.startLocation) {
-        condition.startLocation = toSearch.startLocation
+    if (req.body.startLocation) {
+        condition.startLocation = req.body.startLocation
+        //here code is fine because even in db, its showing only fields that have description.
+        // eg: { startLocation: { description: 'Las Vegas, USA' } } => there are 2 of them, but only 1 shows even in db.
     }
     if (toSearch.difficulty) {
         condition.difficulty = toSearch.difficulty
