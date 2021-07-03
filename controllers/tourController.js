@@ -63,45 +63,31 @@ exports.updateTour = catchAsync(async (req, res, next) => {
     // console.log(req.files)
     // console.log('to updateee', toUpdate)
     console.log(req.body)
-    let currentTour = await Tour.findById(req.params.id)
+    var currentTour = await Tour.findById(req.params.id)
+
     if (req.files) {
-        if (req.files.imageCover) {
-            deleteFile('tours', currentTour.imageCover)
-        }
-        if (req.files.images) {
-            currentTour.images.forEach(image => deleteFile('tours', image))
-        }
+        if (req.files.imageCover) deleteFile('tours', currentTour.imageCover)
+        if (req.files.images) currentTour.images.forEach(image => deleteFile('tours', image))
+
     }
-    let tour = Tour.findByIdAndUpdate(req.params.id, toUpdate, {
-        runValidators: true,
-        new: true
-    })
+    let tour = Tour.findByIdAndUpdate(req.params.id, toUpdate, { runValidators: true, new: true })
         .then(async doc => {
             if (toUpdate.startDate) await Tour.findByIdAndUpdate(req.params.id, { $push: { startDates: toUpdate.startDate } })
 
             if (req.body.locations) {
-                if (req.body.locations.address) {
-                    await Tour.findByIdAndUpdate(req.params.id, {
-                        $push: {
-                            locations: { address: req.body.locations.address }
-                        }
+                if (req.body.locations.address) await Tour.findByIdAndUpdate(req.params.id, {
+                        $push: { locations: { address: req.body.locations.address } }
                     })
                     let locations = []
-                    let tour = await Tour.findById(req.params.id)
+                    let tour =  await Tour.findById(req.params.id)
                     locations = tour.locations
                     locations.forEach(async loc => {
                         if (loc.address === req.body.locations.address) {
                             if (req.body.locations.longitude && req.body.locations.latitude) {
-                                try {
                                     loc.coordinates.push(req.body.locations.longitude, req.body.locations.latitude)
                                     await tour.save()
-                                } catch (e) {
-                                    console.log(e)
-                                }
-                            }
-                        }
+                        }}
                     })
-                }
             }
             if (req.body.startLocation) {
                 if (req.body.startLocation.description) await Tour.findByIdAndUpdate(req.params.id,
