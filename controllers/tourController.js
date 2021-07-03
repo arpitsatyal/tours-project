@@ -86,13 +86,21 @@ exports.updateTour = catchAsync(async (req, res, next) => {
                             locations: { address: req.body.locations.address }
                         }
                     })
-                            if (req.body.locations.longitude && req.body.locations.latitude) await Tour.updateOne({_id: req.params.id},
-                                {
-                                    $push: {
-                                        "locations.$[].coordinates": [req.body.locations.longitude, req.body.locations.latitude]
-                                    }
-                                })
-                        //how to remove from the coordinates from the another field of the array. ie not the one just updated?
+                    let locations = []
+                    let tour = await Tour.findById(req.params.id)
+                    locations = tour.locations
+                    locations.forEach(async loc => {
+                        if (loc.address === req.body.locations.address) {
+                            if (req.body.locations.longitude && req.body.locations.latitude) {
+                                try {
+                                    loc.coordinates.push(req.body.locations.longitude, req.body.locations.latitude)
+                                    await tour.save()
+                                } catch (e) {
+                                    console.log(e)
+                                }
+                            }
+                        }
+                    })
                 }
             }
             if (req.body.startLocation) {
@@ -104,7 +112,6 @@ exports.updateTour = catchAsync(async (req, res, next) => {
                 doc
             })
         })
-        .catch(err => next(err))
     if (!tour) {
         return next(new AppError('no tour found with that ID.', 404))
     }
@@ -135,7 +142,7 @@ exports.searchTour = catchAsync(async (req, res, next) => {
     if (toSearch.name) {
         condition.name = toSearch.name
     }
-    if (req.body.startLocation) {
+    if (req.body.startLocation) if (req.body.startLocation.description) {
         condition.startLocation = req.body.startLocation
         //here code is fine because even in db, its showing only fields that have description.
         // eg: { startLocation: { description: 'Las Vegas, USA' } } => there are 2 of them, but only 1 shows even in db.

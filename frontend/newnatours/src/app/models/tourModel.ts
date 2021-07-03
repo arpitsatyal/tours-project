@@ -20,9 +20,9 @@ export class Tour {
         this.startDate = details.startDate || ''
        this.startLocation = {
            x: details.startLocation
-       }
+       } 
        this.locations =  {
                y: details.locations
-           }
+           } 
     }
 }
