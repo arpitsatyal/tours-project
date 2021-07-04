@@ -1,7 +1,7 @@
 let Tour = require('../models/tourModel')
 let catchAsync = require('../utils/catchAsync')
 
-exports.getTourStats = catchAsync(async (req, res, next) => {
+exports.getTourStats = async (req, res, next) => {
     try {
         let stats = await Tour.aggregate([
             {
@@ -38,7 +38,7 @@ exports.getTourStats = catchAsync(async (req, res, next) => {
             message: e
         })
     }
-})
+}
 
 exports.getMonthlyPlan = catchAsync(async (req, res, next) => {
     let year = req.params.year * 1
