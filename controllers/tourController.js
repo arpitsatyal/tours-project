@@ -66,8 +66,7 @@ exports.updateTour = catchAsync(async (req, res, next) => {
     var currentTour = await Tour.findById(req.params.id)
 
     if (req.files) {
-        if (req.files.imageCover) deleteFile('tours', currentTour.imageCover)
-        if (req.files.images) currentTour.images.forEach(image => deleteFile('tours', image))
+        req.files.imageCover ? deleteFile('tours', currentTour.imageCover) : currentTour.images.forEach(image => deleteFile('tours', image))
 
     }
     let tour = Tour.findByIdAndUpdate(req.params.id, toUpdate, { runValidators: true, new: true })
@@ -82,11 +81,10 @@ exports.updateTour = catchAsync(async (req, res, next) => {
                     let tour =  await Tour.findById(req.params.id)
                     locations = tour.locations
                     locations.forEach(async loc => {
-                        if (loc.address === req.body.locations.address) {
-                            if (req.body.locations.longitude && req.body.locations.latitude) {
+                        if (loc.address === req.body.locations.address) if (req.body.locations.longitude && req.body.locations.latitude) {
                                     loc.coordinates.push(req.body.locations.longitude, req.body.locations.latitude)
                                     await tour.save()
-                        }}
+                        }
                     })
             }
             if (req.body.startLocation) {

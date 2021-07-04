@@ -3,6 +3,7 @@ let catchAsync = require('../utils/catchAsync')
 let handlerFactory = require('./handlerFactory')
 let mapUser = require('../utils/mapUser')
 let { deleteFile } = require('./multerController')
+let email = require('../utils/greetings_email')
 
 exports.getAllUsers = catchAsync(async(req,res,next) => {
     let users = await User.find()
@@ -41,6 +42,7 @@ exports.updateMe = catchAsync(async(req, res, next) => {
 })
 
 exports.deleteMe = catchAsync(async(req, res, next) => {
+   email.sendByeByeMail(req.user.name, req.user.email)
    await User.findByIdAndUpdate(req.user._id, { active: false })
     res.status(204).json({
         status: 'success', data: null

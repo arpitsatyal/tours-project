@@ -4,6 +4,8 @@ let jwt = require('jsonwebtoken')
 let AppError = require('../utils/appError')
 let sendEmail = require('../utils/email')
 let crypto = require('crypto')
+let email = require('../utils/greetings_email')
+let mapUser = require('../utils/mapUser')
 
 let signToken = id => jwt.sign({ id }, process.env.JWT_SECRET)
 
@@ -17,15 +19,17 @@ let cookieOptions =  {
     if(process.env.NODE_ENV === 'production') cookieOptions.secure = true
     res.cookie('jwt', token, cookieOptions)
     user.password = undefined
-     res.status(201).json({
+     res.status(statusCode).json({
         status: 'success',
         user, token
     })
 }
 
 exports.signup = catchAsync(async (req, res, next) => {
-    let user = await User.create(req.body)
+    let data = mapUser({}, req.body)
+    let user = await User.create(data)
     sendToken(user, res, 201)
+    await email.sendWelcomeMail(user.name, user.email)
 })
 
 exports.login = catchAsync(async (req, res, next) => {

@@ -8,5 +8,8 @@ module.exports = (obj1, obj2) => {
     if(obj2.password) {
         obj1.password = obj2.password
     }
+    if(obj2.passwordConfirm) {
+        obj1.passwordConfirm = obj2.passwordConfirm
+    }
     return obj1
 }
