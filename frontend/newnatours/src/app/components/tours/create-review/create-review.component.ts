@@ -40,9 +40,14 @@ reviewId
     })
   }
   updateReview(reviewId) {
+    this.submitting = true
     this.reviewService.updateReview(reviewId, this.tourId, this.creview)
     .subscribe(() => {
       this.notify.showInfo('review updated')
-    }, err => this.notify.showError(err))
+      this.submitting = false
+    }, err => {
+      this.notify.showError(err)
+      this.submitting = false
+    })
   }
 }

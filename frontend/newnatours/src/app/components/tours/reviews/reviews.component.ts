@@ -13,7 +13,7 @@ export class ReviewsComponent implements OnInit {
 tourId
 reviews
 rating = [1,2,3,4,5]
-user 
+user = JSON.parse(localStorage.getItem('user'))
 imagePath = environment.imageUrl + 'img/users/'
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -23,7 +23,6 @@ imagePath = environment.imageUrl + 'img/users/'
   }
 
   ngOnInit(): void {
-    this.user = JSON.parse(localStorage.getItem('user'))
     this.tourId = this.activatedRoute.snapshot.params.tourId
     this.reviewService.getReviews(this.tourId)
     .subscribe((res: any) => {

@@ -16,7 +16,7 @@ export class TourService extends BaseService {
         return this.http.get(this.url, this.setHeaders())
     }
     getOneTour(tourId) {
-        return this.http.get(this.url + tourId, this.setHeadersWithToken())
+        return this.http.get(this.url + tourId, this.setHeaders())
     }
     createTour(tour: Tour) {
         return this.http.post(this.url, tour, this.setHeadersWithToken())

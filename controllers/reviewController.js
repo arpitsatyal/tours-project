@@ -29,7 +29,6 @@ exports.createReview = catchAsync(async (req, res, next) => {
 })
 
 exports.updateReview = catchAsync(async (req, res, next) => {
-	console.log(req.body)
     let doc = await Review.findByIdAndUpdate(req.params.id, req.body, {
         new: true,
         runValidators: true

@@ -7,6 +7,7 @@ import { ReviewService} from './review.service';
 import { PageNotFoundComponent } from './shared/page-not-found/page-not-found.component'
 import { UsersService } from "./users.service";
 import { UploadService } from "./upload.service";
+import { BookingService } from "./booking.service";
 @NgModule({
     declarations: [PageNotFoundComponent],
     imports: [
@@ -19,7 +20,8 @@ import { UploadService } from "./upload.service";
         AuthService,
         ReviewService,
         UsersService,
-        UploadService
+        UploadService,
+        BookingService
     ]
   })
 

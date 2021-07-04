@@ -11,7 +11,7 @@ export class ReviewService extends BaseService {
         super('tours')
     }
   getReviews(tourId) {
-      return this.http.get(`${this.url}${tourId}/reviews`, this.setHeadersWithToken())
+      return this.http.get(`${this.url}${tourId}/reviews`, this.setHeaders())
   }
   createReview(review: Review, tourId) {
       return this.http.post(this.url + tourId + '/' + 'reviews', review, this.setHeadersWithToken())

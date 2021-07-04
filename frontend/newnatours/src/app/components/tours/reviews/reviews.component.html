@@ -1,5 +1,7 @@
 <section class="section-reviews">
-<a routerLink="/tours/{{tourId}}/createReview" class="btn btn-primary">Create Review</a>
+  <div *ngIf="user">
+    <a routerLink="/tours/{{tourId}}/createReview" class="btn btn-primary" *ngIf="user.role !== 'admin'">Create Review</a>
+  </div>
 
     <div class="reviews">
       <div class="reviews__card"  *ngFor="let review of reviews">
@@ -23,8 +25,10 @@
           </svg>
         </div>
         <br>
-        <a class="btn btn-primary" *ngIf="review.user.name === user.name" routerLink="/tours/{{review.tour}}/updateReview/{{review._id}}">Update Review</a> <br>
-        <button class="btn btn-danger btn-sm" *ngIf="review.user.name === user.name || user.role === 'admin'" (click)="deleteReview(review._id)">Delete Review</button> 
+        <div *ngIf="user">
+          <a class="btn btn-primary" *ngIf="review.user.name === user.name" routerLink="/tours/{{review.tour}}/updateReview/{{review._id}}">Update Review</a> <br>
+          <button class="btn btn-danger btn-sm" *ngIf="review.user.name === user.name || user.role === 'admin'" (click)="deleteReview(review._id)">Delete Review</button> 
+        </div>
       </div>
     </div>
   </section>
