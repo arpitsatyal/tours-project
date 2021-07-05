@@ -35,7 +35,8 @@ names = []
     this.submitting =  true
     this.toursService.searchTour(this.tour)
     .subscribe((res: any) => {
-      this.results = res.tours
+    console.log(res)
+      this.results = res.final
       if(!this.results.length) this.notify.showInfo('no tours found for your query!')
       this.submitting = false
     }, err => {

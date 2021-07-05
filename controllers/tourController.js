@@ -126,18 +126,29 @@ exports.searchTour = catchAsync(async (req, res, next) => {
     if (toSearch.name) {
         condition.name = toSearch.name
     }
-    if (req.body.startLocation) if (req.body.startLocation.description) {
-        condition.startLocation = req.body.startLocation
-        //here code is fine because even in db, its showing only fields that have description.
-        // eg: { startLocation: { description: 'Las Vegas, USA' } } => there are 2 of them, but only 1 shows even in db.
-    }
     if (toSearch.difficulty) {
         condition.difficulty = toSearch.difficulty
     }
     console.log('condition', condition)
-    let tours = await Tour.find(condition)
-    res.status(200).json({
-        status: 'success', results: tours.length, tours
+    let final = []
+    Tour.find(condition)
+    .then(async tours => {
+        console.log(tours.length)
+        if(req.body.startLocation) if(req.body.startLocation.description) {
+            let withStartLocation = await Tour.find({ 'startLocation.description': req.body.startLocation.description })
+            console.log(withStartLocation.length)
+            tours.forEach(tour => {
+                withStartLocation.forEach(loc => {
+                    if(tour.name === loc.name) final.push(loc)
+                })
+            })
+        } else {
+            final = tours
+        }
+        console.log(final.length)
+        res.status(200).json({
+            status: 'success', results: final.length, final
+        })
     })
 })
 
