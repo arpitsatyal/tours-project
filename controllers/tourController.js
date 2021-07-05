@@ -102,41 +102,14 @@ exports.updateTour = catchAsync(async (req, res, next) => {
 })
 
 exports.searchTour = catchAsync(async (req, res, next) => {
-    let toSearch = mapTours({}, req.body)
     let condition = {}
-    //price search
-    // console.log(req.body)
-    if (toSearch.minPrice) {
-        condition.price = { $gte: toSearch.minPrice }
-    }
-    if (toSearch.maxPrice) {
-        condition.price = { $lte: toSearch.maxPrice }
-    }
-    if (toSearch.maxPrice && toSearch.minPrice) {
-        condition.price = { $lte: toSearch.maxPrice, $gte: toSearch.minPrice }
-    }
-    // group size search
-    switch (toSearch.maxGroupSize) {
-        case '0-10': condition.maxGroupSize = { $gt: 0, $lt: 10 }
-            break
-        case '10-20': condition.maxGroupSize = { $gt: 10, $lt: 20 }
-            break
-        case '20 +': condition.maxGroupSize = { $gt: 20 }
-    }
-    if (toSearch.name) {
-        condition.name = toSearch.name
-    }
-    if (toSearch.difficulty) {
-        condition.difficulty = toSearch.difficulty
-    }
+    let toSearch = mapTours(condition, req.body)
     console.log('condition', condition)
     let final = []
-    Tour.find(condition)
+    Tour.find(toSearch)
     .then(async tours => {
-        console.log(tours.length)
-        if(req.body.startLocation) if(req.body.startLocation.description) {
+        if(req.body.startLocation && req.body.startLocation.description) {
             let withStartLocation = await Tour.find({ 'startLocation.description': req.body.startLocation.description })
-            console.log(withStartLocation.length)
             tours.forEach(tour => {
                 withStartLocation.forEach(loc => {
                     if(tour.name === loc.name) final.push(loc)
@@ -145,7 +118,6 @@ exports.searchTour = catchAsync(async (req, res, next) => {
         } else {
             final = tours
         }
-        console.log(final.length)
         res.status(200).json({
             status: 'success', results: final.length, final
         })
