@@ -5,13 +5,21 @@ module.exports = (obj1, obj2) => {
     if (obj2.duration) {
         obj1.duration = obj2.duration
     }
-    switch (obj2.maxGroupSize) {
-        case '0-10': obj1.maxGroupSize = { $gt: 0, $lt: 10 }
-        break
-        case '10-20': obj1.maxGroupSize = { $gt: 10, $lt: 20 }
+
+    if (obj2.maxGroupSize) {
+      if((obj2.maxGroupSize.match(/[+]/g)) || obj2.maxGroupSize.match(/[-]/g)) {
+        switch (obj2.maxGroupSize) {
+            case '0-10': obj1.maxGroupSize = { $gt: 0, $lt: 10 }
             break
-        case '20 +': obj1.maxGroupSize = { $gt: 20 }
+            case '10-20': obj1.maxGroupSize = { $gt: 10, $lt: 20 }
+                break
+            case '20 +': obj1.maxGroupSize = { $gt: 20 }
+        }
+      } else {
+          obj1.maxGroupSize = obj2.maxGroupSize
+      }
     }
+
     if (obj2.difficulty) {
         obj1.difficulty = obj2.difficulty
     }
@@ -36,9 +44,9 @@ module.exports = (obj1, obj2) => {
     if (obj2.imageCover) {
         obj1.imageCover = obj2.imageCover
     }
-    if (obj2.startDate) {
-        obj1.startDate = obj2.startDate
-    }
+    // if (obj2.startDate) {
+       
+    // }
     if (obj2.ratingsAverage) {
         obj1.ratingsAverage = obj2.ratingsAverage
     }

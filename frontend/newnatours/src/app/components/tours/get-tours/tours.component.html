@@ -68,6 +68,7 @@
     </div>
   </div>
 </main>
-
+<mat-paginator [pageSize]="pageSize" [length]="totalTours" (page)="onChangedPage($event)" [pageSizeOptions]="pageSizeOptions" *ngIf="!inputData"
+></mat-paginator>
 <app-footer></app-footer>
 </div>

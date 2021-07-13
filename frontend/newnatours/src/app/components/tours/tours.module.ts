@@ -13,6 +13,7 @@ import { GetOneTourComponent } from './get-one-tour/get-one-tour.component';
 import { ReviewsComponent } from './reviews/reviews.component';
 import { CreateReviewComponent } from './create-review/create-review.component';
 import { SearchTourComponent } from './search-tour/search-tour.component';
+import { MatPaginatorModule } from '@angular/material/paginator'
 
 @NgModule({
   declarations: [ToursComponent, WelcomeComponent,
@@ -22,7 +23,8 @@ import { SearchTourComponent } from './search-tour/search-tour.component';
     CommonModule,
     ToursRoutingModule,
     HttpClientModule,
-    FormsModule
+    FormsModule,
+    MatPaginatorModule
   ]
 })
 

@@ -12,16 +12,16 @@ exports.aliasTopTours = async (req, res, next) => {
 
 exports.getAllTours = catchAsync(async (req, res, next) => {
     // filtering
-    let queryObject = { ...req.query }
-    let excludedFields = ['page', 'sort', 'limit', 'fields']
-    excludedFields.forEach(el => delete queryObject[el])
+    // let queryObject = { ...req.query }
+    // let excludedFields = ['page', 'sort', 'limit', 'fields']
+    // excludedFields.forEach(el => delete queryObject[el])
 
     // advanced filtering
     // console.log(queryObject)
-    let queryString = JSON.stringify(queryObject)
-    queryString = queryString.replace(/\b(gte|gt|lte|lt)\b/g, match => `$${match}`)
-    // console.log(queryString)
-    let query = Tour.find(JSON.parse(queryString))
+    // let queryString = JSON.stringify(queryObject)
+    // queryString = queryString.replace(/\b(gte|gt|lte|lt)\b/g, match => `$${match}`)
+    // console.log('query string', queryString)
+    let query = Tour.find()
 
     // // sorting
     if (req.query.sort) {
@@ -38,31 +38,34 @@ exports.getAllTours = catchAsync(async (req, res, next) => {
         query = query.select('-__v')
     }
     // pagination
-    let page = req.query.page * 1 || 1
-    let limit = req.query.limit * 1 || 100
-    let skip = (page - 1) * limit
-    query = query.skip(skip).limit(limit)
-    if (req.query.page) {
-        let numTours = await Tour.countDocuments()
-        if (skip >= numTours) throw new Error('this page does not exist.')
-    }
+    console.log(req.query)
+    let currentPage = req.query.currentpage * 1 
+    let pageSize = req.query.pagesize * 1 
+    if(currentPage && pageSize) {
+        let skip = pageSize * (currentPage - 1)
+        query = query
+        .skip(skip)
+        .limit(pageSize)
+        var totalTours = await Tour.countDocuments()
+            if (skip >= totalTours) throw new Error('this page does not exist.')
+    } 
     // // execute query 
     let tours = await query
     res.status(200).json({
         status: 'success',
         results: tours.length,
-        data: { tours }
+        data: { tours, totalTours }
     })
 })
 
 let mapTours = require('../utils/mapTours')
 const AppError = require('../utils/appError')
 
-exports.updateTour = catchAsync(async (req, res, next) => {
+exports.updateTour = async (req, res, next) => {
     toUpdate = mapTours({}, req.body)
     // console.log(req.files)
-    // console.log('to updateee', toUpdate)
-    console.log(req.body)
+    // console.log(req.body)
+    console.log('to updateee', toUpdate)
     var currentTour = await Tour.findById(req.params.id)
 
     if (req.files) {
@@ -71,7 +74,7 @@ exports.updateTour = catchAsync(async (req, res, next) => {
     }
     let tour = Tour.findByIdAndUpdate(req.params.id, toUpdate, { runValidators: true, new: true })
         .then(async doc => {
-            if (toUpdate.startDate) await Tour.findByIdAndUpdate(req.params.id, { $push: { startDates: toUpdate.startDate } })
+            if (req.body.startDate) await Tour.findByIdAndUpdate(req.params.id, { $push: { startDates: req.body.startDate } })
 
             if (req.body.locations) {
                 if (req.body.locations.address) await Tour.findByIdAndUpdate(req.params.id, {
@@ -96,14 +99,17 @@ exports.updateTour = catchAsync(async (req, res, next) => {
                 doc
             })
         })
+        .catch(err => next(err))
+
     if (!tour) {
         return next(new AppError('no tour found with that ID.', 404))
     }
-})
+}
 
-exports.searchTour = catchAsync(async (req, res, next) => {
+exports.searchTour = (req, res, next) => {
     let condition = {}
     let toSearch = mapTours(condition, req.body)
+    // console.log(req.body)
     console.log('condition', condition)
     let final = []
     Tour.find(toSearch)
@@ -122,7 +128,8 @@ exports.searchTour = catchAsync(async (req, res, next) => {
             status: 'success', results: final.length, final
         })
     })
-})
+    .catch (err => next(err))
+}
 
 exports.getOneTour = handlerFactory.getOne(Tour, 'reviews')
 exports.createTour = handlerFactory.createOne(Tour)

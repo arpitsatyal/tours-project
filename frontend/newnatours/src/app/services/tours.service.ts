@@ -12,8 +12,9 @@ export class TourService extends BaseService {
     ) {
         super('tours')
     }
-    getAllTours() {
-        return this.http.get(this.url, this.setHeaders())
+    getAllTours(pageSize?, currentPage?) {
+        let query = `?pagesize=${pageSize}&currentpage=${currentPage}`
+        return this.http.get(this.url + query, this.setHeaders())
     }
     getOneTour(tourId) {
         return this.http.get(this.url + tourId, this.setHeaders())
