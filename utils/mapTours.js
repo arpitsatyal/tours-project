@@ -44,14 +44,5 @@ module.exports = (obj1, obj2) => {
     if (obj2.imageCover) {
         obj1.imageCover = obj2.imageCover
     }
-    // if (obj2.startDate) {
-       
-    // }
-    if (obj2.ratingsAverage) {
-        obj1.ratingsAverage = obj2.ratingsAverage
-    }
-    if (obj2.ratingsQuantity) {
-        obj1.ratingsQuantity = obj2.ratingsQuantity
-    }
     return obj1
 }

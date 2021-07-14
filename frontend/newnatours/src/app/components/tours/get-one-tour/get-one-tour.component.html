@@ -65,6 +65,17 @@
       <p class="description__text">
      {{tour.summary}}
       </p>
+      <h1 class="heading-secondary ma-bt-lg">All the tour locations with co-ordinates:</h1>
+      <table id="t01" *ngIf="tour.locations">
+        <tr>
+           <th>Location</th>
+           <th>Co-ordinates</th>
+        </tr>
+        <tr *ngFor="let location of tour.locations">
+          <td>{{location.description}}</td> 
+          <td>{{location.coordinates}}</td>
+        </tr>
+     </table>
     </div>
   </section>
   

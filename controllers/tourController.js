@@ -39,16 +39,16 @@ exports.getAllTours = catchAsync(async (req, res, next) => {
     }
     // pagination
     console.log(req.query)
-    let currentPage = req.query.currentpage * 1 
-    let pageSize = req.query.pagesize * 1 
-    if(currentPage && pageSize) {
+    let currentPage = req.query.currentpage * 1
+    let pageSize = req.query.pagesize * 1
+    if (currentPage && pageSize) {
         let skip = pageSize * (currentPage - 1)
         query = query
-        .skip(skip)
-        .limit(pageSize)
+            .skip(skip)
+            .limit(pageSize)
         var totalTours = await Tour.countDocuments()
-            if (skip >= totalTours) throw new Error('this page does not exist.')
-    } 
+        if (skip >= totalTours) throw new Error('this page does not exist.')
+    }
     // // execute query 
     let tours = await query
     res.status(200).json({
@@ -70,29 +70,28 @@ exports.updateTour = async (req, res, next) => {
 
     if (req.files) {
         req.files.imageCover ? deleteFile('tours', currentTour.imageCover) : currentTour.images.forEach(image => deleteFile('tours', image))
-
     }
+
     let tour = Tour.findByIdAndUpdate(req.params.id, toUpdate, { runValidators: true, new: true })
         .then(async doc => {
             if (req.body.startDate) await Tour.findByIdAndUpdate(req.params.id, { $push: { startDates: req.body.startDate } })
 
-            if (req.body.locations) {
-                if (req.body.locations.address) await Tour.findByIdAndUpdate(req.params.id, {
-                        $push: { locations: { address: req.body.locations.address } }
-                    })
-                    let locations = []
-                    let tour =  await Tour.findById(req.params.id)
-                    locations = tour.locations
-                    locations.forEach(async loc => {
-                        if (loc.address === req.body.locations.address) if (req.body.locations.longitude && req.body.locations.latitude) {
-                                    loc.coordinates.push(req.body.locations.longitude, req.body.locations.latitude)
-                                    await tour.save()
-                        }
-                    })
+            if (req.body.locations.hasOwnProperty('description')) {
+                await Tour.findByIdAndUpdate(req.params.id, {
+                    $push: { locations: { description: req.body.locations.description } }
+                })
+                let locations = []
+                let tour = await Tour.findById(req.params.id)
+                locations = tour.locations
+                locations.forEach(async loc => {
+                    if (loc.description === req.body.locations.description) if (req.body.locations.longitude && req.body.locations.latitude) {
+                        loc.coordinates.push(req.body.locations.longitude, req.body.locations.latitude)
+                        await tour.save()
+                    }
+                })
             }
-            if (req.body.startLocation) {
-                if (req.body.startLocation.description) await Tour.findByIdAndUpdate(req.params.id,
-                    { $set: { 'startLocation.description': req.body.startLocation.description } })
+            if (req.body.startLocation.hasOwnProperty('description')) {
+                await Tour.findByIdAndUpdate(req.params.id, { $set: { 'startLocation.description': req.body.startLocation.description } })
             }
             res.status(200).json({
                 status: 'success',
@@ -113,22 +112,22 @@ exports.searchTour = (req, res, next) => {
     console.log('condition', condition)
     let final = []
     Tour.find(toSearch)
-    .then(async tours => {
-        if(req.body.startLocation && req.body.startLocation.description) {
-            let withStartLocation = await Tour.find({ 'startLocation.description': req.body.startLocation.description })
-            tours.forEach(tour => {
-                withStartLocation.forEach(loc => {
-                    if(tour.name === loc.name) final.push(loc)
+        .then(async tours => {
+            if (req.body.startLocation.hasOwnProperty('description')) {
+                let withStartLocation = await Tour.find({ 'startLocation.description': req.body.startLocation.description })
+                tours.forEach(tour => {
+                    withStartLocation.forEach(loc => {
+                        if (tour.name === loc.name) final.push(loc)
+                    })
                 })
+            } else {
+                final = tours
+            }
+            res.status(200).json({
+                status: 'success', results: final.length, final
             })
-        } else {
-            final = tours
-        }
-        res.status(200).json({
-            status: 'success', results: final.length, final
         })
-    })
-    .catch (err => next(err))
+        .catch(err => next(err))
 }
 
 exports.getOneTour = handlerFactory.getOne(Tour, 'reviews')

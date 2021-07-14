@@ -37,6 +37,7 @@ imageUserPath = environment.imageUrl + 'img/users/'
     this.tourService.getOneTour(this.tourId)
     .subscribe((res:any) => {
       this.tour = res.doc
+      console.log(this.tour)
       this.images = res.doc.images
     }, err => this.notifyService.showError(err))
   }
