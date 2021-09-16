@@ -62,7 +62,8 @@ let mapTours = require('../utils/mapTours')
 const AppError = require('../utils/appError')
 
 exports.updateTour = async (req, res, next) => {
-    toUpdate = mapTours({}, req.body)
+    let toUpdate = {}
+    mapTours(toUpdate, req.body)
     // console.log(req.files)
     // console.log(req.body)
     console.log('to updateee', toUpdate)
@@ -107,11 +108,11 @@ exports.updateTour = async (req, res, next) => {
 
 exports.searchTour = (req, res, next) => {
     let condition = {}
-    let toSearch = mapTours(condition, req.body)
+    mapTours(condition, req.body)
     // console.log(req.body)
     console.log('condition', condition)
     let final = []
-    Tour.find(toSearch)
+    Tour.find(condition)
         .then(async tours => {
             if (req.body.startLocation.hasOwnProperty('description')) {
                 let withStartLocation = await Tour.find({ 'startLocation.description': req.body.startLocation.description })

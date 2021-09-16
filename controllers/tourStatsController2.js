@@ -2,21 +2,24 @@ let Tour = require('../models/tourModel')
 let catchAsync = require('../utils/catchAsync')
 
 // match le chai relevant data find garne
-// group le chai kun fields le data separate garne
+// group le chai kun fields le data separate garne / k k data dekhaune
 
 //tour stats, first match all the tours having grp size greater than 15,
 //  then group those matching tours acc to their startLocation and calculate averages and etc
 
 exports.getTourStats = catchAsync(async (req, res, next) => {
-    let stats = await Tour.aggregate([
+    let stats = Tour.aggregate([
         {
-            $match: { maxGroupSize: { $gte: 15 } }
+            $match: { ratingsAverage: { $gte: 4 }}
         },
         {
             $group: {
-                _id: '$startLocation',
-                numRating: { $sum: '$ratingsQuantity' },
-                avgRating: { $avg: '$ratingsAverage' },
+                _id: '$difficulty',
+                avgRatings: { $avg: '$ratingsAverage' },
+                numRatings: { $sum: '$ratingsQuantity'},
+                minPrice: { $min: '$price' },
+                maxPrice: { $max: '$price' },
+                avgPrice: { $avg: '$price' },
                 numTours: { $sum: 1 }
             }
         }
@@ -45,15 +48,17 @@ exports.monthlyPlan = catchAsync(async (req, res, next) => {
         },
         {
             $group: {
-                _id: { $month: '$startDates' },
+                _id: { $month: '$startDates' }, //returns month of a certain date.
                 numTourStarts: { $sum: 1 },
                 tours: { $push: '$name' }
             }
         },
-        {
-            $addFields: { month: '$_id' }
-        }
+        // {
+        //     $addFields: { month: '$_id' }
+        // }
     ])
+    
+    await Tour.aggregate(monthlyPlan, {path: "name"})
     res.status(200).json({
         status: 'success', results: monthlyPlan.length, monthlyPlan
     })

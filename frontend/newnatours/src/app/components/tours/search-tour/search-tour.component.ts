@@ -16,7 +16,8 @@ startLocations = []
 submitting = false
 showName = false
 names = []
-  constructor(
+
+constructor(
     private notify: notifyService,
     private toursService: TourService
   ) { }

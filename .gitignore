@@ -1,5 +1,6 @@
 public/*
 public/img/users*
+dev-data/
 node_modules/
 config.env
 gittoken.txt

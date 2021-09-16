@@ -15,8 +15,6 @@ router.route('/tour-stats2').get(tourStatsController2.getTourStats)
 
 router.route('/tour-monthlyPlan/:year').get(tourStatsController2.monthlyPlan)
 router.route('/tour-monthly-plan/:year').get(
-    authController.protect,
-    authController.restrictTo('admin', 'lead-guide', 'guide'),
     tourStatsController.getMonthlyPlan)
 
     router.route('/')

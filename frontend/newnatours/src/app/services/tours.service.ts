@@ -40,4 +40,7 @@ export class TourService extends BaseService {
     searchTour(tour: Tour) {
         return this.http.post(this.url + 'searchTour', tour, this.setHeaders())
     }
+    searchByMonths(year) {
+        return this.http.get(this.url + `tour-monthly-plan/${year}`, this.setHeaders())
+    }
 }

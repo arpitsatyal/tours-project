@@ -12,7 +12,7 @@ module.exports = (obj1, obj2) => {
             case '0-10': obj1.maxGroupSize = { $gt: 0, $lt: 10 }
             break
             case '10-20': obj1.maxGroupSize = { $gt: 10, $lt: 20 }
-                break
+            break
             case '20 +': obj1.maxGroupSize = { $gt: 20 }
         }
       } else {

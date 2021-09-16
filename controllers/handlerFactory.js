@@ -17,6 +17,7 @@ exports.deleteOne = Model => {
 
 exports.createOne = Model => catchAsync(async (req, res, next) => {
 	let toCreate = mapTours({}, req.body)
+    console.log('to creat', toCreate)
     let doc = await Model.create(toCreate)
     res.status(201).json({
         status: 'success',
